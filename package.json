@@ -1,0 +1,37 @@
+{
+  "name": "memofy",
+  "version": "0.0.1-alpha.1",
+  "description": "Prevents re-execution of large javascript functions that have been processed once with the same parameter.",
+  "main": "build/index.js",
+  "type": "module",
+  "scripts": {
+    "build": "sh ./scripts/prod-build.sh",
+    "dev": "sh ./scripts/dev-build.sh",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/ahmetilhn/memofy.git"
+  },
+  "keywords": [
+    "usememo",
+    "use-memo",
+    "memoization",
+    "memoizer",
+    "cacheable functions"
+  ],
+  "author": "Ahmet ilhan <ahmetilhan.dev@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ahmetilhn/memofy/issues"
+  },
+  "homepage": "https://github.com/ahmetilhn/memofy#readme",
+  "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-terser": "^0.4.4",
+    "@rollup/plugin-typescript": "^11.1.6",
+    "rollup": "^4.21.0",
+    "tslib": "^2.7.0"
+  }
+}
