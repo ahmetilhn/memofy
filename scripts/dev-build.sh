@@ -1,1 +1,1 @@
-llup -c -w --environment INCLUDE_DEPS,BUILD:development
+rollup -c -w --environment INCLUDE_DEPS,BUILD:development

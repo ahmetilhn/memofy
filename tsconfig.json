@@ -16,5 +16,6 @@
     "noEmit": true,
     "downlevelIteration": true
   },
-  "include": ["lib"]
+  "include": ["lib"],
+  "exclude": ["node_modules"]
 }
