@@ -17,8 +17,11 @@
     "use-memo",
     "memoization",
     "memoizer",
-    "cacheable functions"
+    "cacheable functions",
+    "memofy",
+    "useMemo"
   ],
+  "private": false,
   "author": "Ahmet ilhan <ahmetilhan.dev@gmail.com>",
   "license": "MIT",
   "bugs": {

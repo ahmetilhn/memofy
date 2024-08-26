@@ -1,0 +1,12 @@
+__tests__
+demo
+lib
+scripts
+.gitignore
+babel.config.js
+jest.config.js
+package-lock.json
+rollup.config.mjs
+tsconfig.json
+node_modules
+.DS_Store
