@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        background-color: black;
+      }
+    </style>
+  </head>
+  <body>
+    <button onclick="_processNumber(1)">Calculate again</button>
+    <button onclick="_processNumber2(2)">Calculate again 2</button>
+    <script src="../build/index.js"></script>
+
+    <script>
+      // 'memofy' global olarak tanımlanır
+      const exampleFunc = function (a, b) {
+        return a + b;
+      };
+      function processNumber(number) {
+        // Sayıyı stringe çevirerek basamaklarına ayırıyoruz
+        const digits = number.toString().split("").map(Number);
+
+        // Her basamağı iki katına çıkarıyoruz
+        const doubledDigits = digits.map((digit) => digit * 2);
+
+        // İşlem sonucunda oluşan basamakları topluyoruz
+        const sum = doubledDigits.reduce((acc, curr) => acc + curr, 0);
+
+        return sum;
+      }
+
+      function processNumber2(number) {
+        return number * 2;
+      }
+
+      const _processNumber = memofy(processNumber);
+      const _processNumber2 = memofy(processNumber2);
+      console.log(_processNumber(1));
+      //console.log(_processNumber2(2));
+    </script>
+  </body>
+</html>
