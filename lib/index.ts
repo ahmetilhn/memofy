@@ -1,14 +1,18 @@
 import CacheStore from "./store/CacheStore";
 import DepsStore from "./store/DepsStore";
 
-export default function memofy<ReturnType>(
+type MemoizedFunction<Args extends Array<any>, ReturnType> = (
+  ...args: Args
+) => ReturnType;
+
+export default function memofy<Args extends Array<any>, ReturnType>(
   _functionToMemoize: Function,
   _deps: Array<any> = []
-): (..._functionToMemoizeArgs: Array<any>) => ReturnType {
+): MemoizedFunction<Args, ReturnType> {
   const cacheStore = new CacheStore();
   const depsStore = new DepsStore();
 
-  return (...args: Array<any>): ReturnType => {
+  return (...args: Args): ReturnType => {
     if (
       cacheStore.isHasCache(_functionToMemoize, args) &&
       !depsStore.isChanged(_functionToMemoize, _deps)
