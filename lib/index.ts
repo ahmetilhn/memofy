@@ -3,12 +3,14 @@ const cacheStore = new WeakMap<Function, Map<string, any>>();
 export default function memofy<ReturnType>(
   _functionToMemoize: Function,
   ..._deps: Array<any>
-): Function {
+): (..._functionToMemoizeArgs: Array<any>) => ReturnType {
+  if (typeof _functionToMemoize !== "function")
+    throw new Error("functionToMemoize must be function");
   return (...args: Array<any>): ReturnType => {
     const cachedData: Map<any, any> | undefined =
       cacheStore.get(_functionToMemoize);
 
-    if (typeof cachedData !== "undefined") {
+    if (cachedData?.get(JSON.stringify(args))) {
       return cachedData.get(JSON.stringify(args));
     }
 
