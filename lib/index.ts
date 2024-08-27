@@ -1,12 +1,10 @@
 import CacheStore from "./store/CacheStore";
 import DepsStore from "./store/DepsStore";
+
 export default function memofy<ReturnType>(
   _functionToMemoize: Function,
   _deps: Array<any> = []
 ): (..._functionToMemoizeArgs: Array<any>) => ReturnType {
-  if (typeof _functionToMemoize !== "function")
-    throw new Error("functionToMemoize must be function");
-
   const cacheStore = new CacheStore();
   const depsStore = new DepsStore();
 
