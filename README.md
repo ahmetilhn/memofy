@@ -1,10 +1,10 @@
 # memofy
 
-## Cache mechanism(memoizer) for functions executed with the same parameters
+### Cache mechanism(memoizer) for functions executed with the same parameters (Only 1.14 KB)
 
 This project provides a memoize function for improving performance in JavaScript or TypeScript projects by caching the results of expensive function calls. By memoizing, repeated calls with the same arguments will return the cached result, speeding up execution.
 
-**This module works like react's useMemo hook.**
+This module works like react's useMemo hook but NOT required react. You can use any framework or pure javascript projects
 
 ## Features
 
