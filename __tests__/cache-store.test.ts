@@ -1,7 +1,7 @@
 import CacheStore from "../lib/store/CacheStore";
 
 describe("CacheStore Tests", () => {
-  let cacheStore: CacheStore;
+  let cacheStore: CacheStore<Map<string, any>>;
   beforeEach(() => {
     cacheStore = new CacheStore();
   });

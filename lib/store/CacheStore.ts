@@ -1,11 +1,11 @@
-class CacheStore<T extends Map<string, any>> {
-  private store: WeakMap<Function, T>;
+class CacheStore<CacheContent extends Map<string, any>> {
+  private store: WeakMap<Function, CacheContent>;
 
   constructor() {
-    this.store = new WeakMap<Function, T>();
+    this.store = new WeakMap<Function, CacheContent>();
   }
 
-  set(_key: Function, _val: T): void {
+  set(_key: Function, _val: CacheContent): void {
     this.store.set(_key, _val);
   }
 

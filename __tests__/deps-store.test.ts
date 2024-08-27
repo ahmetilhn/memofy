@@ -1,7 +1,7 @@
 import DepsStore from "../lib/store/DepsStore";
 
 describe("DepsStore Tests", () => {
-  let depsStore: DepsStore;
+  let depsStore: DepsStore<Array<any>>;
 
   beforeEach(() => {
     depsStore = new DepsStore();
