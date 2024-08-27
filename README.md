@@ -1,20 +1,20 @@
 # memofy
 
-## Cache mechanism for functions executed with the same parameters
+## Cache mechanism(memoizer) for functions executed with the same parameters
 
-#### This project provides a memoize function for improving performance in JavaScript or TypeScript projects by caching the results of expensive function calls. By memoizing, repeated calls with the same arguments will return the cached result, speeding up execution.
+This project provides a memoize function for improving performance in JavaScript or TypeScript projects by caching the results of expensive function calls. By memoizing, repeated calls with the same arguments will return the cached result, speeding up execution.
 
 **This module works like react's useMemo hook.**
 
 ## Features
 
-- Function Memoization: Caches results of function calls with the same arguments.
-- Dependency Tracking: Updates the cache if dependencies change.
-- Flexibility: Usable in both JavaScript and TypeScript projects.
-- The best solution for CPU-intensive operations or complex calculations
-- The disconnected functions are deleted from memory. The caches belonging to this function are also deleted.
-- WeakMap based cache store
-- WeakMap Disconnects methods that cannot communicate with weak reference links and triggers the garbage collector to kick in
+- **Function Memoization: Caches results of function calls with the same arguments.**
+- **Dependency Tracking: Updates the cache if dependencies change.**
+- **Flexibility: Usable in both JavaScript and TypeScript projects.**
+- **The best solution for CPU-intensive operations or complex calculations**
+- **The disconnected functions are deleted from memory. The caches belonging to this function are also deleted.**
+- **WeakMap based cache store**
+- **WeakMap Disconnects methods that cannot communicate with weak reference links and triggers the garbage collector to kick in**
 
 ## Usage case
 
@@ -34,6 +34,8 @@ const memoizedConcatPhoneNumber = memofy(concatPhoneNumber, []);
 
 memoizedConcatPhoneNumber(90, 555); // Runs concatPhoneNumber when first run
 memoizedConcatPhoneNumber(90, 555); // get value from cache
+
+memoizedConcatPhoneNumber(90, 552); // Runs concatPhoneNumber because params is change
 ```
 
 ### With deps parameter
