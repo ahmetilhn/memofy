@@ -11,11 +11,13 @@
 *.sln.docstates
 build
 .vscode
+coverage
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 .DS_Store
 # Mono auto generated files
 mono_crash.*
+
 
 # Build results
 [Dd]ebug/
