@@ -1,28 +1,23 @@
-const cacheStore = new WeakMap<Function, Map<string, any>>();
-
+import CacheStore from "./store/CacheStore";
 export default function memofy<ReturnType>(
   _functionToMemoize: Function,
-  ..._deps: Array<any>
+  _deps?: Array<any>
 ): (..._functionToMemoizeArgs: Array<any>) => ReturnType {
   if (typeof _functionToMemoize !== "function")
     throw new Error("functionToMemoize must be function");
-
+  const cacheStore = new CacheStore();
   return (...args: Array<any>): ReturnType => {
-    const cachedData: Map<any, any> | undefined =
-      cacheStore.get(_functionToMemoize);
-
-    const stringifiedArgs = JSON.stringify(args);
-
-    if (cachedData?.get(stringifiedArgs)) {
-      return cachedData.get(stringifiedArgs);
+    if (cacheStore.isHasCache(_functionToMemoize, args)) {
+      return cacheStore.get(_functionToMemoize, args) as ReturnType;
     }
 
-    const returnVal = _functionToMemoize(...args);
+    const result = _functionToMemoize(...args);
 
+    // Set to cacheStore for next calling
     const cacheContent: Map<any, any> = new Map();
-    cacheContent.set(stringifiedArgs, returnVal);
+    cacheContent.set(JSON.stringify(args), result);
     cacheStore.set(_functionToMemoize, cacheContent);
 
-    return returnVal;
+    return result;
   };
 }

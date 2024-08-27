@@ -1,5 +1,5 @@
 import memofy from "../lib";
-describe("performance tests", () => {
+describe("Performance Tests", () => {
   test("should execute heavy method with and without caching", async () => {
     const heavyComputation = jest.fn(
       async (inputNumber: number): Promise<number> => {
@@ -44,7 +44,7 @@ describe("performance tests", () => {
     const newEndTime = performance.now();
     const newTimeDiff = newEndTime - newStartTime;
     expect(newResult).toEqual(30337444);
-    
+
     expect(newTimeDiff).toBeLessThanOrEqual(1);
     expect(heavyComputation).toHaveBeenCalledTimes(1); // Because value returned cache
   });
