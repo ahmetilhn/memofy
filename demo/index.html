@@ -16,6 +16,7 @@
     <script src="../build/index.js"></script>
 
     <script>
+      const _x = { price: 10 };
       // 'memofy' global olarak tanımlanır
       const exampleFunc = function (a, b) {
         return a + b;
@@ -30,16 +31,18 @@
         // İşlem sonucunda oluşan basamakları topluyoruz
         const sum = doubledDigits.reduce((acc, curr) => acc + curr, 0);
 
-        return sum;
+        return sum + _x.price;
       }
 
       function processNumber2(number) {
+        _x.price = 20;
         return number * 2;
       }
 
-      const _processNumber = memofy(processNumber);
+      const _processNumber = memofy(processNumber, [_x]);
       const _processNumber2 = memofy(processNumber2);
       console.log(_processNumber(1));
+
       //console.log(_processNumber2(2));
     </script>
   </body>
