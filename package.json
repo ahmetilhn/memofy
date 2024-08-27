@@ -13,6 +13,16 @@
     "url": "git+ssh://git@github.com/ahmetilhn/memofy.git"
   },
   "keywords": [
+    "memoization",
+    "cache",
+    "performance",
+    "optimization",
+    "function",
+    "memoize",
+    "typescript",
+    "javascript",
+    "utility",
+    "decorator",
     "usememo",
     "use-memo",
     "memoization",
