@@ -1,36 +1,37 @@
 import CacheStore from "./store/CacheStore";
 import DepsStore from "./store/DepsStore";
+import { type Deps } from "./types/deps.type";
+import { type MemoizedFunction } from "./types/memoized-function.type";
 
-type MemoizedFunction<Args extends Array<any>, ReturnType> = (
-  ...args: Args
-) => ReturnType;
-
-export default function memofy<Args extends Array<any>, ReturnType>(
+export default function memofy<Args extends Readonly<Array<any>>, ReturnType>(
   _functionToMemoize: Function,
-  _deps: Array<any> = []
+  _deps: Deps = []
 ): MemoizedFunction<Args, ReturnType> {
   const cacheStore = new CacheStore();
   const depsStore = new DepsStore();
 
   return (...args: Args): ReturnType => {
-    if (
-      cacheStore.isHasCache(_functionToMemoize, args) &&
-      !depsStore.isChanged(_functionToMemoize, _deps)
-    ) {
-      return cacheStore.get(_functionToMemoize, args) as ReturnType;
-    }
+    try {
+      if (
+        cacheStore.isHasCache(_functionToMemoize, args) &&
+        !depsStore.isChanged(_functionToMemoize, _deps)
+      ) {
+        return cacheStore.get(_functionToMemoize, args) as ReturnType;
+      }
+      const result = _functionToMemoize(...args);
 
-    const result = _functionToMemoize(...args);
+      // Set cacheStore for next calling
+      const cacheContent: Map<string, any> = new Map();
+      cacheContent.set(JSON.stringify(args), result);
+      cacheStore.set(_functionToMemoize, cacheContent);
 
-    // Set cacheStore for next calling
-    const cacheContent: Map<string, any> = new Map();
-    cacheContent.set(JSON.stringify(args), result);
-    cacheStore.set(_functionToMemoize, cacheContent);
-
-    if (_deps.length > 0) {
       // Set depsStore for next calling when deps changed
-      depsStore.set(_functionToMemoize, _deps);
+      if (_deps.length > 0) depsStore.set(_functionToMemoize, _deps);
+
+      return result;
+    } catch (err: unknown) {
+      console.error(err);
+      return _functionToMemoize(...args);
     }
-    return result;
   };
 }

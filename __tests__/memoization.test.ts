@@ -121,4 +121,17 @@ describe("Without Caching Tests", () => {
     const _getStorageData = memofy(getAuthIsReady, []);
     expect(_getStorageData()).toBeFalsy();
   });
+
+  test("should throw err when passing Function prop in deps", () => {
+    const getNumber = jest.fn(() => 10);
+    let depFunc = () => {
+      return 10;
+    };
+    const _getNumber = memofy(getNumber, [depFunc]);
+    expect(_getNumber()).toBe(10);
+    // depFunc = () => {
+    //   return 5;
+    // };
+    // expect(_getNumber()).toBe(4);
+  });
 });

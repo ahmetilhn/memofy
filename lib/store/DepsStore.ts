@@ -1,4 +1,6 @@
-class DepsStore<CacheContent extends Array<any>> {
+import { type Deps } from "../types/deps.type";
+
+class DepsStore<CacheContent extends Deps> {
   private readonly store: WeakMap<Function, CacheContent>;
 
   constructor() {
@@ -14,6 +16,7 @@ class DepsStore<CacheContent extends Array<any>> {
   }
   isChanged(_key: Function, _deps: CacheContent): boolean {
     const deps = this.get(_key);
+
     if (deps) {
       return _deps.some((_dep, index) => {
         return JSON.stringify(deps[index]) !== JSON.stringify(_dep);
