@@ -3,6 +3,7 @@
   "version": "0.0.6",
   "description": "Prevents re-execution of large javascript functions that have been processed once with the same parameter.",
   "main": "build/index.js",
+  "types": "build/index.d.ts",
   "scripts": {
     "build": "sh ./scripts/prod-build.sh",
     "dev": "sh ./scripts/dev-build.sh",
@@ -51,6 +52,7 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "rollup": "^4.21.0",
+    "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.7.0"
   }
 }

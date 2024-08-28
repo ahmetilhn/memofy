@@ -1,22 +1,30 @@
 import babel from "@rollup/plugin-babel";
 import terser from "@rollup/plugin-terser";
 import typescript from "@rollup/plugin-typescript";
-export default {
-  input: "lib/index.ts",
-  output: {
-    file: "build/index.js",
-    format: "umd",
-    name: "memofy",
+import { dts } from "rollup-plugin-dts";
+export default [
+  {
+    input: "./lib/index.ts",
+    output: {
+      file: "./build/index.js",
+      format: "umd",
+      name: "memofy",
+    },
+    plugins: [
+      typescript({
+        tsconfig: "./tsconfig.json",
+      }),
+      babel({
+        babelHelpers: "bundled",
+        exclude: "node_modules/**",
+        presets: ["@babel/preset-env"],
+      }),
+      terser(),
+    ],
   },
-  plugins: [
-    typescript({
-      tsconfig: "./tsconfig.json",
-    }),
-    babel({
-      babelHelpers: "bundled",
-      exclude: "node_modules/**",
-      presets: ["@babel/preset-env"],
-    }),
-    terser(),
-  ],
-};
+  {
+    input: "./lib/index.ts",
+    output: [{ file: "./build/index.d.ts", format: "umd" }],
+    plugins: [dts()],
+  },
+];
