@@ -30,7 +30,7 @@ export default function memofy<Args extends Readonly<Array<any>>, ReturnType>(
 
       return result;
     } catch (err: unknown) {
-      console.error(err);
+      console.error("memofy execute error", err);
       return _functionToMemoize(...args);
     }
   };
