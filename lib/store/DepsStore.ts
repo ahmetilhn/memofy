@@ -1,3 +1,4 @@
+import stringifier from "../helpers/stringifier.helper";
 import { type Deps } from "../types/deps.type";
 
 class DepsStore<D extends Deps> {
@@ -19,7 +20,7 @@ class DepsStore<D extends Deps> {
 
     if (deps) {
       return _deps.some((_dep, index) => {
-        return JSON.stringify(deps[index]) !== JSON.stringify(_dep);
+        return stringifier(deps[index]) !== stringifier(_dep);
       });
     }
     return false;
