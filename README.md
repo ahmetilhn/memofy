@@ -1,4 +1,4 @@
-# memofy ⌛️
+# memofy 🚀
 
 ### Cache mechanism(memoizer) for functions executed with the same parameters (Only 1.3 KB)
 
