@@ -69,4 +69,59 @@ describe("Without Caching Tests", () => {
     );
     expect(getLabel).toHaveBeenCalledTimes(2);
   });
+  test("should execute correctly", () => {
+    const replaceTurkishChars = jest.fn((text: string): string => {
+      return text
+        .replace(/Ğ/gim, "G")
+        .replace(/Ü/gim, "U")
+        .replace(/Ş/gim, "S")
+        .replace(/İ/gim, "I")
+        .replace(/Ö/gim, "O")
+        .replace(/Ç/gim, "C")
+        .replace(/ğ/gim, "g")
+        .replace(/ü/gim, "u")
+        .replace(/ş/gim, "s")
+        .replace(/ı/gim, "i")
+        .replace(/ö/gim, "o")
+        .replace(/ç/gim, "c");
+    });
+    const _replaceTurkishChars = memofy(replaceTurkishChars, []);
+    expect(_replaceTurkishChars("ŞĞĞŞĞĞÇŞİİİÇÇÇÇ")).toBe("SGGSGGCSIIICCCC");
+    expect(_replaceTurkishChars("ŞĞĞŞĞĞÇŞİİİÇÇÇÇ")).toBe("SGGSGGCSIIICCCC");
+    expect(replaceTurkishChars).toHaveBeenCalledTimes(1);
+    expect(_replaceTurkishChars("İÇÇÇÇ")).toBe("ICCCC");
+    expect(replaceTurkishChars).toHaveBeenCalledTimes(2);
+
+    const searchText = jest.fn((text: string, scanQuery: string) => {
+      if (typeof text !== "string") text = String(text);
+      text = replaceTurkishChars(text).toLowerCase();
+      scanQuery = replaceTurkishChars(scanQuery).toLowerCase();
+      return text.includes(scanQuery);
+    });
+    const _searchText = memofy(searchText, []);
+
+    expect(_searchText("this is test subject", "test")).toBeTruthy();
+    expect(replaceTurkishChars).toHaveBeenCalledTimes(4);
+    expect(_searchText("this is test subject", "test")).toBeTruthy();
+    expect(searchText).toHaveBeenCalledTimes(1);
+
+    expect(replaceTurkishChars).toHaveBeenCalledTimes(4);
+    expect(_searchText("this is test", "test")).toBeTruthy();
+    expect(searchText).toHaveBeenCalledTimes(2);
+
+    expect(replaceTurkishChars).toHaveBeenCalledTimes(6);
+    expect(searchText).toHaveBeenCalledTimes(2);
+  });
+
+  test("should work correctly while the method used the window object inside", () => {
+    const getAuthIsReady = jest.fn(() => {
+      return (
+        window &&
+        window.localStorage &&
+        Array.isArray(JSON.parse(localStorage.getItem("auth") as string))
+      );
+    });
+    const _getStorageData = memofy(getAuthIsReady, []);
+    expect(_getStorageData()).toBeFalsy();
+  });
 });
