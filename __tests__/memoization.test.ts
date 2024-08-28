@@ -115,11 +115,8 @@ describe("Without Caching Tests", () => {
 
   test("should work correctly while the method used the window object inside", () => {
     const getAuthIsReady = jest.fn(() => {
-      return (
-        window &&
-        window.localStorage &&
-        Array.isArray(JSON.parse(localStorage.getItem("auth") as string))
-      );
+      const authKey = window.localStorage.getItem("auth");
+      return !!authKey;
     });
     const _getStorageData = memofy(getAuthIsReady, []);
     expect(_getStorageData()).toBeFalsy();

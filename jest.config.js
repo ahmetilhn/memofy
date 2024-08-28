@@ -6,7 +6,7 @@ module.exports = {
   testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.ts?$",
   moduleFileExtensions: ["ts", "js", "json", "node"],
   collectCoverage: true,
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   coverageDirectory: "coverage",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
 };
