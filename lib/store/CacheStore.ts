@@ -1,16 +1,20 @@
-class CacheStore<CacheContent extends Map<string, any>> {
-  private readonly store: WeakMap<Function, CacheContent>;
+import stringifier from "../helpers/stringifier.helper";
+import { type Cache } from "../types/cache.type";
+class CacheStore<C extends Cache> {
+  private readonly store: WeakMap<Function, C>;
 
   constructor() {
-    this.store = new WeakMap<Function, CacheContent>();
+    this.store = new WeakMap<Function, C>();
   }
 
-  set(_key: Function, _val: CacheContent): void {
-    this.store.set(_key, _val);
+  set(_key: Function, _args: Readonly<Array<any>>, _result: any): void {
+    const val = new Map() as C;
+    val.set(stringifier(_args), _result);
+    this.store.set(_key, val);
   }
 
   get(_key: Function, _args: Readonly<Array<any>>): any {
-    return this.store.get(_key)?.get(JSON.stringify(_args));
+    return this.store.get(_key)?.get(stringifier(_args));
   }
 
   isHasCache(_key: Function, _args: Readonly<Array<any>>): boolean {

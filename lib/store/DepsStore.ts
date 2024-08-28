@@ -1,20 +1,20 @@
 import { type Deps } from "../types/deps.type";
 
-class DepsStore<CacheContent extends Deps> {
-  private readonly store: WeakMap<Function, CacheContent>;
+class DepsStore<D extends Deps> {
+  private readonly store: WeakMap<Function, D>;
 
   constructor() {
-    this.store = new WeakMap<Function, CacheContent>();
+    this.store = new WeakMap<Function, D>();
   }
 
-  set(_key: Function, _deps: CacheContent): void {
+  set(_key: Function, _deps: D): void {
     this.store.set(_key, structuredClone(_deps));
   }
 
-  get(_key: Function): CacheContent | undefined {
+  get(_key: Function): D | undefined {
     return this.store.get(_key);
   }
-  isChanged(_key: Function, _deps: CacheContent): boolean {
+  isChanged(_key: Function, _deps: D): boolean {
     const deps = this.get(_key);
 
     if (deps) {

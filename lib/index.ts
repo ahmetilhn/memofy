@@ -21,9 +21,7 @@ export default function memofy<Args extends Readonly<Array<any>>, ReturnType>(
       const result = _functionToMemoize(...args);
 
       // Set cacheStore for next calling
-      const cacheContent: Map<string, any> = new Map();
-      cacheContent.set(JSON.stringify(args), result);
-      cacheStore.set(_functionToMemoize, cacheContent);
+      cacheStore.set(_functionToMemoize, args, result);
 
       // Set depsStore for next calling when deps changed
       if (_deps.length > 0) depsStore.set(_functionToMemoize, _deps);

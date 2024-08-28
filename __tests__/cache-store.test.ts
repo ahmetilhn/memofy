@@ -9,10 +9,8 @@ describe("CacheStore Tests", () => {
   test("should set cacheStore with multiple parameters", () => {
     const sumTotal = (a: number, b: number) => a + b;
     const paramArgs = [10, 5];
-    const cacheContent = new Map();
     const result = sumTotal(paramArgs[0], paramArgs[1]);
-    cacheContent.set(JSON.stringify(paramArgs), result);
-    cacheStore.set(sumTotal, cacheContent);
+    cacheStore.set(sumTotal, paramArgs, result);
     expect(cacheStore.get(sumTotal, paramArgs)).toBe(15);
   });
 
@@ -20,20 +18,16 @@ describe("CacheStore Tests", () => {
     let getAge;
     getAge = (a: { age: number }) => a.age;
     const paramArgs = [{ age: 24 }];
-    const cacheContent = new Map();
     const result = getAge(paramArgs[0]);
-    cacheContent.set(JSON.stringify(paramArgs), result);
-    cacheStore.set(getAge, cacheContent);
+    cacheStore.set(getAge, paramArgs, result);
     expect(cacheStore.get(getAge, paramArgs)).toBe(24);
   });
 
   test("should get cache", () => {
     const sumTotal = (a: number, b: number) => a + b;
     const paramArgs = [10, 5];
-    const cacheContent = new Map();
     const result = sumTotal(paramArgs[0], paramArgs[1]);
-    cacheContent.set(JSON.stringify(paramArgs), result);
-    cacheStore.set(sumTotal, cacheContent);
+    cacheStore.set(sumTotal, paramArgs, result);
     expect(cacheStore.get(sumTotal, paramArgs)).toBeDefined();
   });
 
@@ -41,10 +35,8 @@ describe("CacheStore Tests", () => {
     let sumTotal;
     sumTotal = (a: number, b: number) => a + b;
     const paramArgs = [10, 5];
-    const cacheContent = new Map();
     const result = sumTotal(paramArgs[0], paramArgs[1]);
-    cacheContent.set(JSON.stringify(paramArgs), result);
-    cacheStore.set(sumTotal, cacheContent);
+    cacheStore.set(sumTotal, paramArgs, result);
     expect(cacheStore.isHasCache(sumTotal, paramArgs)).toBeTruthy();
 
     sumTotal = function dummy() {};

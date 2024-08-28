@@ -57,15 +57,15 @@ describe("Without Caching Tests", () => {
       return (
         _product.name +
         " - " +
-        (_product.price * 1000 - 10).toLocaleString().concat("$")
+        (_product.price * 900).toLocaleString().concat("$")
       );
     });
     const _getLabel = memofy(getLabel);
-    expect(_getLabel({ price: 10, name: "Apple" })).toEqual("Apple - 9.990$");
+    expect(_getLabel({ price: 10, name: "Apple" })).toEqual("Apple - 9.000$");
     expect(getLabel).toHaveBeenCalledTimes(1);
 
     expect(_getLabel({ price: 1000, name: "Orange" })).toEqual(
-      "Orange - 999.990$"
+      "Orange - 900.000$"
     );
     expect(getLabel).toHaveBeenCalledTimes(2);
   });
