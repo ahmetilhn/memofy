@@ -33,7 +33,7 @@ describe("Performance Tests", () => {
     const result = await _heavyComputation(91012323);
     const endTime = performance.now();
     const timeDiff = endTime - startTime;
-
+    console.log("Before caching", timeDiff, " ms");
     expect(result).toEqual(30337444);
     expect(timeDiff).toBeGreaterThanOrEqual(45);
     expect(heavyComputation).toHaveBeenCalledTimes(1);
@@ -43,8 +43,8 @@ describe("Performance Tests", () => {
     const newResult = await _heavyComputation(91012323);
     const newEndTime = performance.now();
     const newTimeDiff = newEndTime - newStartTime;
+    console.log("After caching", newTimeDiff, " ms");
     expect(newResult).toEqual(30337444);
-
     expect(newTimeDiff).toBeLessThanOrEqual(1);
     expect(heavyComputation).toHaveBeenCalledTimes(1); // Because value returned cache
   });

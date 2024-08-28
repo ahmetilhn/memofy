@@ -1,4 +1,4 @@
-# memofy
+# memofy ⌛️
 
 ### Cache mechanism(memoizer) for functions executed with the same parameters (Only 1.14 KB)
 
@@ -15,6 +15,26 @@ This module works like react's useMemo hook but NOT required react. You can use 
 - **The disconnected functions are deleted from memory. The caches belonging to this function are also deleted.**
 - **WeakMap based cache store**
 - **WeakMap Disconnects methods that cannot communicate with weak reference links and triggers the garbage collector to kick in**
+
+## Why should we use memofy?
+
+**Using Memofy you can reduce the execution time of your functions by up to 1500 times. The following results were obtained by testing on a heavy function.** 💪🏼
+
+| Test Case                  | Function Execute Time (ms) |
+| -------------------------- | -------------------------- |
+| **With Memofy (UNCACHED)** | 50.65 ms                   |
+| **With Memofy (CACHED)**   | 0.031 ms                   |
+| **Without Memofy**         | 57.571 ms                  |
+
+## Installation
+
+##### NPM
+
+`npm install memofy`
+
+##### YARN
+
+`yarn add memofy`
 
 ## Usage case
 
