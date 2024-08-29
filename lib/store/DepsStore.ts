@@ -1,4 +1,3 @@
-import stringifier from "../helpers/stringifier.helper";
 import { type Deps } from "../types/deps.type";
 
 class DepsStore<D extends Deps> {
@@ -9,21 +8,17 @@ class DepsStore<D extends Deps> {
   }
 
   set(_key: Function, _deps: D): void {
-    this.store.set(_key, structuredClone(_deps));
+    this.store.set(_key, _deps);
   }
 
   get(_key: Function): D | undefined {
     return this.store.get(_key);
   }
   isChanged(_key: Function, _deps: D): boolean {
+    if (!_deps) return false;
     const deps = this.get(_key);
-
-    if (deps) {
-      return _deps.some((_dep, index) => {
-        return stringifier(deps[index]) !== stringifier(_dep);
-      });
-    }
-    return false;
+    if (!deps) return false;
+    return _deps.some((_dep, index) => !Object.is(deps[index], _dep));
   }
 }
 

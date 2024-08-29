@@ -3,18 +3,18 @@ import DepsStore from "./store/DepsStore";
 import { type Deps } from "./types/deps.type";
 import { type MemoizedFunction } from "./types/memoized-function.type";
 
+const cacheStore = new CacheStore();
+const depsStore = new DepsStore();
+
 export default function memofy<Args extends Readonly<Array<any>>, ReturnType>(
   _functionToMemoize: Function,
   _deps: Deps = []
 ): MemoizedFunction<Args, ReturnType> {
-  const cacheStore = new CacheStore();
-  const depsStore = new DepsStore();
-
   return (...args: Args): ReturnType => {
     try {
       if (
         cacheStore.isHasCache(_functionToMemoize, args) &&
-        !depsStore.isChanged(_functionToMemoize, _deps)
+        (!_deps.length || !depsStore.isChanged(_functionToMemoize, _deps))
       ) {
         return cacheStore.get(_functionToMemoize, args) as ReturnType;
       }
