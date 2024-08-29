@@ -157,3 +157,7 @@ _Tests were written for all cases and all parameter types. [Tests](https://githu
 | lib/store     | 100     | 100      | 100     | 100     | 0                 |
 | CacheStore.ts | 100     | 100      | 100     | 100     | 0                 |
 | DepsStore.ts  | 100     | 100      | 100     | 100     | 0                 |
+
+## Contributing
+
+_This is open source software. If you want, you can support it by becoming a contributor._ [Github Repository](https://github.com/ahmetilhn/memofy)
