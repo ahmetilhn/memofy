@@ -26,6 +26,21 @@ This module works like react's useMemo hook but NOT required react. You can use 
 | **With Memofy (CACHED)**   | 0.031 ms                   |
 | **Without Memofy**         | 57.571 ms                  |
 
+AND very easy
+
+```js
+import memofy from "memofy";
+
+const dep1 = /** Variable to track change */
+
+const heavyMethod = memofy((arg1, arg2, ...args) => {
+ // calculate something then return
+}, [dep1, dep2, ...deps]);
+
+// heavyMethod looks at the deps and arguments every time it is called.
+// If there is no change, it brings it from the cache. If there is a change, it runs the function again
+```
+
 ## Installation
 
 ##### NPM
@@ -52,10 +67,9 @@ const concatPhoneNumber = (extension, number) => {
 
 const memoizedConcatPhoneNumber = memofy(concatPhoneNumber, []);
 
-memoizedConcatPhoneNumber(90, 555); // Runs concatPhoneNumber when first run
-memoizedConcatPhoneNumber(90, 555); // get value from cache
-
-memoizedConcatPhoneNumber(90, 552); // Runs concatPhoneNumber because params is change
+memoizedConcatPhoneNumber(90, 555); // Runs concatPhoneNumber once
+memoizedConcatPhoneNumber(90, 555); // Don't run because fetched from cache (same parameter)
+memoizedConcatPhoneNumber(90, 552); // Runs concatPhoneNumber because params is changed
 ```
 
 ### With deps parameter
@@ -83,6 +97,42 @@ let calculatedPrice = calculateTax(); // Runs concatPhoneNumber because product 
 
 taxRatio = 0.8;
 calculatedPrice = calculateTax(); // Runs concatPhoneNumber because taxRatio changed
+```
+
+```js
+import memofy from "memofy";
+
+const products = [
+  /**Let's say there are more than 100 products */
+];
+
+// It is costly to cycle through 100 products each time. Just keep the result in the cache when it runs once.
+const getTotalPrice = () => {
+  return products.reduce((acc, curr) => acc + curr.price, 0);
+};
+
+const _getTotalPrice = memofy(getTotalPrice, [products]);
+getTotalPrice(); // Runs getTotalPrice once
+getTotalPrice(); // Don't run because fetched from cache
+products.push({
+  /** a few products */
+});
+getTotalPrice(); // Runs again getTotalPrice because products is changed
+```
+
+## Declaration for typescript
+
+```ts
+type Deps = Readonly<Array<any>>;
+
+type MemoizedFunction<Args extends Readonly<Array<any>>, ReturnType> = (
+  ...args: Args
+) => ReturnType;
+
+function memofy<Args extends Readonly<Array<any>>, ReturnType>(
+  _functionToMemoize: Function,
+  _deps?: Deps
+): MemoizedFunction<Args, ReturnType>;
 ```
 
 ## Performance result
