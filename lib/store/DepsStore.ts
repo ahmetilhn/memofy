@@ -1,3 +1,4 @@
+import { deepClone, isDeepEqual } from "amigo-js";
 import { type Deps } from "../types/deps.type";
 
 class DepsStore<D extends Deps> {
@@ -8,7 +9,7 @@ class DepsStore<D extends Deps> {
   }
 
   set(_key: Function, _deps: D): void {
-    this.store.set(_key, _deps);
+    this.store.set(_key, deepClone(_deps));
   }
 
   get(_key: Function): D | undefined {
@@ -18,7 +19,7 @@ class DepsStore<D extends Deps> {
     if (!_deps) return false;
     const deps = this.get(_key);
     if (!deps) return false;
-    return _deps.some((_dep, index) => !Object.is(deps[index], _dep));
+    return _deps.some((_dep, index) => !isDeepEqual(deps[index], _dep));
   }
 }
 
