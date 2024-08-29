@@ -149,14 +149,16 @@ _Performance results on a complex function that distinguishes prime numbers. [Pe
 
 _Tests were written for all cases and all parameter types. [Tests](https://github.com/ahmetilhn/memofy/tree/master/__tests__)_
 
-| File          | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s |
-| ------------- | ------- | -------- | ------- | ------- | ----------------- |
-| All files     | 100     | 100      | 100     | 100     | 0                 |
-| lib           | 100     | 100      | 100     | 100     | 0                 |
-| index.ts      | 100     | 100      | 100     | 100     | 0                 |
-| lib/store     | 100     | 100      | 100     | 100     | 0                 |
-| CacheStore.ts | 100     | 100      | 100     | 100     | 0                 |
-| DepsStore.ts  | 100     | 100      | 100     | 100     | 0                 |
+| File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s |
+| --------------------- | ------- | -------- | ------- | ------- | ----------------- |
+| All files             | 90.9    | 93.33    | 100     | 90.32   |
+| lib                   | 84.61   | 100      | 100     | 83.33   |
+| index.ts              | 84.61   | 100      | 100     | 83.33   | 31-32             |
+| lib/helpers           | 75      | 75       | 100     | 75      |
+| stringifier.helper.ts | 75      | 75       | 100     | 75      | 6                 |
+| lib/store             | 100     | 100      | 100     | 100     |
+| CacheStore.ts         | 100     | 100      | 100     | 100     |
+| DepsStore.ts          | 100     | 100      | 100     | 100     |
 
 ## Contributing
 
