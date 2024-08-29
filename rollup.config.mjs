@@ -25,6 +25,6 @@ export default [
   {
     input: "./lib/index.ts",
     output: [{ file: "./build/index.d.ts", format: "umd" }],
-    plugins: [dts(), terser()],
+    plugins: [dts()],
   },
 ];
