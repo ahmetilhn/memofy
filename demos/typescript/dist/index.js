@@ -3,6 +3,9 @@ var product = { name: "Test Product", price: 36 };
 var getProductPrice = function (_product) {
     return _product.price.toLocaleString();
 };
+console.log(performance.now(), "ggg");
+console.log(getProductPrice(product));
+console.log(performance.now());
 var _getPrice = memofy(getProductPrice, []);
 // Runs once because uncached
 console.log(performance.now());

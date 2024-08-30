@@ -5,7 +5,9 @@ const product = { name: "Test Product", price: 36 };
 const getProductPrice = (_product: typeof product): string => {
   return _product.price.toLocaleString();
 };
-
+console.log(performance.now(), "ggg");
+console.log(getProductPrice(product));
+console.log(performance.now());
 const _getPrice = memofy(getProductPrice, []);
 // Runs once because uncached
 console.log(performance.now());
