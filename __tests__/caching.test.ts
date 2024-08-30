@@ -133,11 +133,9 @@ describe("Caching Tests", () => {
     ];
 
     expect(_getPriorityPhone(myPhones, true)).toBe("905321111111,Fax#");
-    console.log("STARTED PHONE METHOD");
     expect(_getPriorityPhone(myPhones, false)).toBe("+905321111111,Fax#");
     expect(getPriorityPhone).toHaveBeenCalledTimes(2);
     expect(_getPriorityPhone(myPhones, true)).toBe("905321111111,Fax#");
-    console.log("ENDED PHONE METHOD");
     expect(getPriorityPhone).toHaveBeenCalledTimes(2);
     expect(getPhoneNumber).toHaveBeenCalledTimes(2);
     while (myPhones.length > 0) {
