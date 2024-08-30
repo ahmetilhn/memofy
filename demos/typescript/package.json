@@ -8,6 +8,6 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
-    "memofy": "^0.0.7"
+    "memofy": "^0.0.8"
   }
 }

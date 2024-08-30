@@ -55,7 +55,7 @@
     "rollup-plugin-dts": "^6.1.1",
     "tslib": "^2.7.0"
   },
-  "dependencies": {
-    "amigo-js": "^2.0.0"
+  "peerDependencies": {
+    "amigo-js": "^2.0.1"
   }
 }
