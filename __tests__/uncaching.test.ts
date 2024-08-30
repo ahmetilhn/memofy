@@ -88,7 +88,6 @@ describe("Without Caching Tests", () => {
     });
     const _replaceTurkishChars = memofy(replaceTurkishChars, []);
     expect(_replaceTurkishChars("ŞĞĞŞĞĞÇŞİİİÇÇÇÇ")).toBe("SGGSGGCSIIICCCC");
-    console.log("REPLACER");
     expect(_replaceTurkishChars("ŞĞĞŞĞĞÇŞİİİÇÇÇÇ")).toBe("SGGSGGCSIIICCCC");
     expect(replaceTurkishChars).toHaveBeenCalledTimes(1);
     expect(_replaceTurkishChars("İÇÇÇÇ")).toBe("ICCCC");
@@ -107,7 +106,6 @@ describe("Without Caching Tests", () => {
     expect(_searchText("this is test subject", "test")).toBeTruthy();
     expect(searchText).toHaveBeenCalledTimes(1);
     expect(replaceTurkishChars).toHaveBeenCalledTimes(4);
-    console.log("started");
     expect(_searchText("this is test", "test")).toBeTruthy();
     expect(searchText).toHaveBeenCalledTimes(2);
     expect(replaceTurkishChars).toHaveBeenCalledTimes(6);

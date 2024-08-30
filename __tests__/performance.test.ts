@@ -45,7 +45,7 @@ describe("Performance Tests", () => {
     const newTimeDiff = newEndTime - newStartTime;
     console.log("After caching", newTimeDiff, " ms");
     expect(newResult).toEqual(30337444);
-    expect(newTimeDiff).toBeLessThanOrEqual(7);
+    expect(newTimeDiff).toBeLessThanOrEqual(1);
     expect(heavyComputation).toHaveBeenCalledTimes(1); // Because value returned cache
   });
 });

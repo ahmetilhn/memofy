@@ -1,27 +1,27 @@
-import FunctionStore from "../lib/store/FunctionStore";
+import FunctionCacheStore from "../lib/store/FunctionCacheStore";
 import { Args } from "../lib/types/args.type";
 
 describe("CacheStore Tests", () => {
-  let functionStore: FunctionStore<Args>;
+  let functionCacheStore: FunctionCacheStore<Args>;
   beforeEach(() => {
-    functionStore = new FunctionStore();
+    functionCacheStore = new FunctionCacheStore();
   });
 
   test("should set cacheStore with multiple parameters", () => {
     const sumTotal = (a: number, b: number) => a + b;
     const paramArgs = [10, 5];
-    functionStore.set(sumTotal, paramArgs);
-    expect(functionStore.getCacheByArgs(sumTotal, paramArgs)).toStrictEqual(
-      paramArgs
-    );
+    functionCacheStore.set(sumTotal, paramArgs);
+    expect(
+      functionCacheStore.getCacheByArgs(sumTotal, paramArgs)
+    ).toStrictEqual(paramArgs);
   });
 
   test("should set cacheStore with one parameter", () => {
     let getAge;
     getAge = (a: { age: number }) => a.age;
     const paramArgs = [{ age: 24 }];
-    functionStore.set(getAge, paramArgs);
-    expect(functionStore.getCacheByArgs(getAge, paramArgs)).toStrictEqual(
+    functionCacheStore.set(getAge, paramArgs);
+    expect(functionCacheStore.getCacheByArgs(getAge, paramArgs)).toStrictEqual(
       paramArgs
     );
   });
@@ -30,18 +30,20 @@ describe("CacheStore Tests", () => {
     const sumTotal = (a: number, b: number) => a + b;
     const paramArgs = [10, 5];
     const result = sumTotal(paramArgs[0], paramArgs[1]);
-    functionStore.set(sumTotal, paramArgs);
-    expect(functionStore.getCacheByArgs(sumTotal, paramArgs)).toBeDefined();
+    functionCacheStore.set(sumTotal, paramArgs);
+    expect(
+      functionCacheStore.getCacheByArgs(sumTotal, paramArgs)
+    ).toBeDefined();
   });
 
   test("should control has cache", () => {
     let sumTotal;
     sumTotal = (a: number, b: number) => a + b;
     const paramArgs = [10, 5];
-    functionStore.set(sumTotal, paramArgs);
-    expect(functionStore.isHasCacheByArgs(sumTotal, paramArgs)).toBeTruthy();
+    functionCacheStore.set(sumTotal, paramArgs);
+    expect(functionCacheStore.isHasCache(sumTotal)).toBeTruthy();
 
     sumTotal = function dummy() {};
-    expect(functionStore.isHasCacheByArgs(sumTotal, paramArgs)).toBeFalsy();
+    expect(functionCacheStore.isHasCache(sumTotal)).toBeFalsy();
   });
 });

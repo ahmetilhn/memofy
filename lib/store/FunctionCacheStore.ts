@@ -1,6 +1,6 @@
 import { deepClone, isDeepEqual } from "amigo-js";
 import { type Args } from "../types/args.type";
-class FunctionStore<A extends Args> {
+class FunctionCacheStore<A extends Args> {
   private readonly store: WeakMap<Function, Array<A>>;
 
   constructor() {
@@ -8,21 +8,22 @@ class FunctionStore<A extends Args> {
   }
 
   set(_key: Function, _args: A): void {
-    if (!this.isHasCacheByArgs(_key, _args)) {
+    if (this.isHasCache(_key)) {
       this.store.get(_key)?.push(deepClone(_args));
+      return;
     }
     this.store.set(_key, [deepClone(_args)]);
   }
+
   getCacheByArgs(_key: Function, _args: A): A | undefined {
-    return this.store.get(_key)?.findLast((__args) => {
-      return isDeepEqual(__args, _args);
-    });
+    return this.store
+      .get(_key)
+      ?.findLast((__args) => isDeepEqual(__args, _args));
   }
 
-  isHasCacheByArgs(_key: Function, _args: A): boolean {
-    if (!this.store.has(_key)) return false;
-    return !!this.getCacheByArgs(_key, _args);
+  isHasCache(_key: Function): boolean {
+    return this.store.has(_key);
   }
 }
 
-export default FunctionStore;
+export default FunctionCacheStore;
