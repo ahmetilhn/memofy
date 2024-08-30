@@ -26,4 +26,22 @@ describe("Caching Tests", () => {
     expect(_concatPhoneNumber(90, 5555553)).toEqual("90+5555553");
     expect(concatPhoneNumber).toHaveBeenCalledTimes(2);
   });
+  test("should return value from caching", () => {
+    const getPrice = jest.fn(
+      (product: { price: number }): number => product.price
+    );
+    const _getPrice = memofy(getPrice, []);
+    expect(_getPrice({ price: 10 })).toBe(10);
+    const product = { price: 22 };
+    expect(_getPrice(product)).toBe(22);
+    expect(_getPrice(product)).toBe(22);
+    expect(getPrice).toHaveBeenCalledTimes(2);
+    product.price = 5;
+    expect(_getPrice(product)).toBe(5);
+    expect(getPrice).toHaveBeenCalledTimes(3);
+    expect(_getPrice(product)).toBe(5);
+    expect(_getPrice(product)).toBe(5);
+    expect(_getPrice(product)).toBe(5);
+    expect(getPrice).toHaveBeenCalledTimes(3);
+  });
 });
