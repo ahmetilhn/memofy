@@ -15,7 +15,8 @@ describe("Without Caching Tests", () => {
     const returnName = jest.fn(() => "Jack");
     const _returnName = memofy(returnName);
     expect(_returnName()).toStrictEqual("Jack");
-    expect(returnName).toHaveBeenCalledTimes(1);
+    expect(_returnName()).toStrictEqual("Jack");
+    expect(returnName).toHaveBeenCalledTimes(2);
   });
 
   test("should return value with multiply parameters", () => {
@@ -87,6 +88,7 @@ describe("Without Caching Tests", () => {
     });
     const _replaceTurkishChars = memofy(replaceTurkishChars, []);
     expect(_replaceTurkishChars("ŞĞĞŞĞĞÇŞİİİÇÇÇÇ")).toBe("SGGSGGCSIIICCCC");
+    console.log("REPLACER");
     expect(_replaceTurkishChars("ŞĞĞŞĞĞÇŞİİİÇÇÇÇ")).toBe("SGGSGGCSIIICCCC");
     expect(replaceTurkishChars).toHaveBeenCalledTimes(1);
     expect(_replaceTurkishChars("İÇÇÇÇ")).toBe("ICCCC");
@@ -104,13 +106,11 @@ describe("Without Caching Tests", () => {
     expect(replaceTurkishChars).toHaveBeenCalledTimes(4);
     expect(_searchText("this is test subject", "test")).toBeTruthy();
     expect(searchText).toHaveBeenCalledTimes(1);
-
     expect(replaceTurkishChars).toHaveBeenCalledTimes(4);
+    console.log("started");
     expect(_searchText("this is test", "test")).toBeTruthy();
     expect(searchText).toHaveBeenCalledTimes(2);
-
     expect(replaceTurkishChars).toHaveBeenCalledTimes(6);
-    expect(searchText).toHaveBeenCalledTimes(2);
   });
 
   test("should work correctly while the method used the window object inside", () => {

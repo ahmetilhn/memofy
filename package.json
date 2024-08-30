@@ -56,6 +56,6 @@
     "tslib": "^2.7.0"
   },
   "peerDependencies": {
-    "amigo-js": "^2.0.1"
+    "amigo-js": "^2.0.3"
   }
 }

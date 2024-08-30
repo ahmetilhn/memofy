@@ -1,28 +1,28 @@
-import DepsStore from "../lib/store/DepsStore";
+import DependencyStore from "../lib/store/DependencyStore";
 
-describe("DepsStore Tests", () => {
-  let depsStore: DepsStore<Array<any>>;
+describe("DependencyStore Tests", () => {
+  let dependencyStore: DependencyStore<Array<any>>;
 
   beforeEach(() => {
-    depsStore = new DepsStore();
+    dependencyStore = new DependencyStore();
   });
 
-  test("should set to depsStore", () => {
+  test("should set to dependencyStore", () => {
     const product = { price: 10 };
     const getPrice = () => product.price;
     const deps = [product];
-    depsStore.set(getPrice, deps);
-    expect(depsStore.get(getPrice)).toEqual(deps);
+    dependencyStore.set(getPrice, deps);
+    expect(dependencyStore.get(getPrice)).toEqual(deps);
   });
 
   test("should return isChanged", () => {
     const product = { price: 10 };
     const getPrice = () => product.price;
     const deps = [product];
-    depsStore.set(getPrice, deps);
-    expect(depsStore.isChanged(getPrice, deps)).toBeFalsy();
+    dependencyStore.set(getPrice, deps);
+    expect(dependencyStore.isChanged(getPrice, deps)).toBeFalsy();
 
     product.price = 30;
-    expect(depsStore.isChanged(getPrice, deps)).toBeTruthy();
+    expect(dependencyStore.isChanged(getPrice, deps)).toBeTruthy();
   });
 });

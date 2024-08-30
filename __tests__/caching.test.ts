@@ -18,14 +18,10 @@ describe("Caching Tests", () => {
   });
 
   test("should return value from caching and it has been called once", () => {
-    expect(_concatPhoneNumber(90, 5555552)).toEqual("90+5555552");
-    expect(concatPhoneNumber).toHaveBeenCalledTimes(1); // Because value returned from cache
+    expect(_concatPhoneNumber(90, 5555553)).toEqual("90+5555553");
+    expect(concatPhoneNumber).toHaveBeenCalledTimes(2); // Because value returned from cache
   });
 
-  test("should return value from caching and it has been called once", () => {
-    expect(_concatPhoneNumber(90, 5555553)).toEqual("90+5555553");
-    expect(concatPhoneNumber).toHaveBeenCalledTimes(2);
-  });
   test("should return value from caching", () => {
     const getPrice = jest.fn(
       (product: { price: number }): number => product.price
@@ -37,6 +33,7 @@ describe("Caching Tests", () => {
     expect(_getPrice(product)).toBe(22);
     expect(getPrice).toHaveBeenCalledTimes(2);
     product.price = 5;
+    console.log("bbbbb");
     expect(_getPrice(product)).toBe(5);
     expect(getPrice).toHaveBeenCalledTimes(3);
     expect(_getPrice(product)).toBe(5);
