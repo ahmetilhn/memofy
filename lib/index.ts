@@ -9,12 +9,12 @@ const functionCacheStore = new FunctionCacheStore();
 const dependencyCacheStore = new DependencyCacheStore();
 const argumentCacheStore = new ArgumentCacheStore();
 export default function memofy<A extends Args, ReturnType>(
-  _functionToMemoize: Function,
+  _functionToMemoize: (...args: Array<unknown>) => ReturnType,
   _deps: Deps = []
 ): MemoizedFunction<A, ReturnType> {
   return (...args: A): ReturnType => {
-    // IF IT HAVE CACHE
     try {
+      // IF IT HAVE CACHE
       if (
         functionCacheStore.isHasCache(_functionToMemoize) &&
         !dependencyCacheStore.isChanged(_functionToMemoize, _deps)
