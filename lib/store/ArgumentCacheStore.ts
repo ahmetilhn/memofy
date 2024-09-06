@@ -1,5 +1,5 @@
 import { deepClone, isDeepEqual } from "amigo-js";
-import { Args } from "../types/args.type";
+import { type Args } from "../types/args.type";
 
 class ArgumentCacheStore<A extends Args> {
   private readonly store = new Map<A, any>();
@@ -8,9 +8,10 @@ class ArgumentCacheStore<A extends Args> {
   }
 
   getCacheByKey(_args: A): any {
-    return [...this.store.entries()].find(([__args, _result]) =>
-      isDeepEqual(_args, __args)
-    )?.[1];
+    return [...this.store.entries()]
+      .slice()
+      .reverse()
+      .find(([__args, _result]) => isDeepEqual(_args, __args))?.[1];
   }
 
   set(_args: A, _result: any) {

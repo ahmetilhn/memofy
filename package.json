@@ -1,6 +1,6 @@
 {
   "name": "memofy",
-  "version": "0.0.12",
+  "version": "0.0.13-beta.1",
   "description": "Prevents re-execution of large javascript functions that have been processed once with the same parameter.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -56,6 +56,6 @@
     "tslib": "^2.7.0"
   },
   "peerDependencies": {
-    "amigo-js": "^2.1.1"
+    "amigo-js": "^2.1.4"
   }
 }

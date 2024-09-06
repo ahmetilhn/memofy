@@ -1,5 +1,5 @@
 import FunctionCacheStore from "../lib/store/FunctionCacheStore";
-import { Args } from "../lib/types/args.type";
+import { type Args } from "../lib/types/args.type";
 
 describe("CacheStore Tests", () => {
   let functionCacheStore: FunctionCacheStore<Args>;

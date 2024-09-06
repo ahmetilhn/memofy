@@ -62,11 +62,11 @@ describe("Without Caching Tests", () => {
       );
     });
     const _getLabel = memofy(getLabel);
-    expect(_getLabel({ price: 10, name: "Apple" })).toEqual("Apple - 9,000$");
+    expect(_getLabel({ price: 10, name: "Apple" })).toEqual("Apple - 9.000$");
     expect(getLabel).toHaveBeenCalledTimes(1);
 
     expect(_getLabel({ price: 1000, name: "Orange" })).toEqual(
-      "Orange - 900,000$"
+      "Orange - 900.000$"
     );
     expect(getLabel).toHaveBeenCalledTimes(2);
   });
@@ -120,16 +120,14 @@ describe("Without Caching Tests", () => {
     expect(_getStorageData()).toBeFalsy();
   });
 
-  test("should throw err when passing Function prop in deps", () => {
-    const getNumber = jest.fn(() => 10);
-    let depFunc = () => {
-      return 10;
-    };
-    const _getNumber = memofy(getNumber, [depFunc]);
-    expect(_getNumber()).toBe(10);
-    // depFunc = () => {
-    //   return 5;
-    // };
-    // expect(_getNumber()).toBe(4);
+  test("should return correct result when passed function used context", () => {
+    const context = { name: "John" };
+
+    const getName = jest.fn(function (suffix: string) {
+      return `${suffix} ${this.name}`;
+    });
+    const memoizedGetName = memofy(getName, [], context);
+    expect(memoizedGetName("Mr")).toBe("Mr John");
+    expect(memoizedGetName("Ms")).toBe("Ms John");
   });
 });

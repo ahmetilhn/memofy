@@ -158,4 +158,46 @@ describe("Caching Tests", () => {
     expect(_getName("John")).toBe("John");
     expect(arg.getName).toHaveBeenCalledTimes(2);
   });
+  test("should return correct result when passing Function prop in deps", () => {
+    const getNumber = jest.fn((x: number) => x * 10);
+    let depFunc = () => {
+      return 10;
+    };
+    const _getNumber = memofy(getNumber, [depFunc]);
+    expect(_getNumber(2)).toBe(2 * 10);
+    depFunc = () => {
+      return 5;
+    };
+    expect(_getNumber(3)).toBe(30);
+    expect(_getNumber(3)).toBe(30);
+    expect(getNumber).toHaveBeenCalledTimes(2);
+  });
+  test("should return cached result when passed function used context", () => {
+    const context = { name: "John" };
+
+    const getName = jest.fn(function (suffix: string) {
+      return `${suffix} ${this.name}`;
+    });
+    const memoizedGetName = memofy(getName, [context], context);
+    expect(memoizedGetName("Mr")).toBe("Mr John");
+    expect(memoizedGetName("Mr")).toBe("Mr John");
+    expect(memoizedGetName("Mr")).toBe("Mr John");
+    expect(memoizedGetName("Ms")).toBe("Ms John");
+    expect(getName).toHaveBeenCalledTimes(2);
+
+    context.name = "Lily";
+    expect(memoizedGetName("Ms")).toBe("Ms Lily");
+    expect(getName).toHaveBeenCalledTimes(3);
+  });
+
+  test("should return cached result when passed function used context", () => {
+    const getName = jest.fn((suffix: string) => {
+      return `${suffix} ${global.user.name}`;
+    });
+    const memoizedGetName = memofy(getName, [], global);
+    expect(memoizedGetName("Mr")).toBe("Mr Jack");
+    expect(memoizedGetName("Mr")).toBe("Mr Jack");
+    expect(getName).toHaveBeenCalledTimes(1);
+    expect(memoizedGetName("Ms")).toBe("Ms Jack");
+  });
 });

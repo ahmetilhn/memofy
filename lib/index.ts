@@ -1,16 +1,19 @@
-import { Args } from "./types/args.type";
 import FunctionCacheStore from "./store/FunctionCacheStore";
 import DependencyCacheStore from "./store/DependencyCacheStore";
 import ArgumentCacheStore from "./store/ArgumentCacheStore";
+
+import { type Args } from "./types/args.type";
 import { type Deps } from "./types/deps.type";
 import { type MemoizedFunction } from "./types/memoized-function.type";
 
 const functionCacheStore = new FunctionCacheStore();
 const dependencyCacheStore = new DependencyCacheStore();
 const argumentCacheStore = new ArgumentCacheStore();
+
 export default function memofy<A extends Args, ReturnType>(
   _functionToMemoize: (...args: Array<unknown>) => ReturnType,
-  _deps: Deps = []
+  _deps: Deps = [],
+  _context: unknown = undefined
 ): MemoizedFunction<A, ReturnType> {
   return (...args: A): ReturnType => {
     try {
@@ -23,15 +26,15 @@ export default function memofy<A extends Args, ReturnType>(
           _functionToMemoize,
           args
         );
+
         if (cachedArgs) {
           const cachedResult = argumentCacheStore.getCacheByKey(cachedArgs);
-
           if (cachedResult) return cachedResult;
         }
       }
 
       // IF IT HAVEN'T ANY CACHE
-      const result = _functionToMemoize(...args);
+      const result = _functionToMemoize.apply(_context, args);
       // SET FUNCTION AND ARGUMENT CACHE STORE FOR REMEMBER RESULT NEXT CALLING
 
       if (args.length) {
@@ -44,9 +47,9 @@ export default function memofy<A extends Args, ReturnType>(
 
       return result;
     } catch (err: unknown) {
-      console.error("memofy execute error", err);
+      console.error("memofy executing error", err);
       // RETURN PURE FUNCTION WHEN THROW ERROR
-      return _functionToMemoize(...args);
+      return _functionToMemoize.apply(_context, args);
     }
   };
 }
