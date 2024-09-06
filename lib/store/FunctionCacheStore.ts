@@ -18,7 +18,9 @@ class FunctionCacheStore<A extends Args> {
   getCacheByArgs(_key: Function, _args: A): A | undefined {
     return this.store
       .get(_key)
-      ?.findLast((__args) => isDeepEqual(__args, _args));
+      ?.slice()
+      .reverse()
+      .find((__args) => isDeepEqual(__args, _args));
   }
 
   isHasCache(_key: Function): boolean {
