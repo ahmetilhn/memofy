@@ -120,19 +120,38 @@ products.push({
 getTotalPrice(); // Runs again getTotalPrice because products is changed
 ```
 
+### With context
+
+```js
+import memofy from "memofy";
+
+this.user.name = "Jack"; // For example inject name to context
+
+const getName = (suffix) => {
+  return `${suffix} ${this.user.name}`;
+};
+const memoizedGetName = memofy(getName, [], this);
+memoizedGetName("Mr"); // Mr Jack
+
+this.user.name = "John";
+memoizedGetName("Mr"); // Mr John
+```
+
 ## Declaration for typescript
 
 ```ts
 type Deps = Readonly<Array<any>>;
+type Args = Array<any>;
 
-type MemoizedFunction<Args extends Readonly<Array<any>>, ReturnType> = (
-  ...args: Args
+type MemoizedFunction<A extends Args, ReturnType> = (
+  ...args: A
 ) => ReturnType;
 
-function memofy<Args extends Readonly<Array<any>>, ReturnType>(
-  _functionToMemoize: Function,
+function memofy<Args extends Readonly<A extends Args, ReturnType>(
+  _functionToMemoize: (...args: Array<unknown>) => ReturnType,
   _deps?: Deps
-): MemoizedFunction<Args, ReturnType>;
+  _context?: unknown
+): MemoizedFunction<A, ReturnType>;
 ```
 
 ## Performance result

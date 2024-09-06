@@ -13,7 +13,7 @@ const argumentCacheStore = new ArgumentCacheStore();
 export default function memofy<A extends Args, ReturnType>(
   _functionToMemoize: (...args: Array<unknown>) => ReturnType,
   _deps: Deps = [],
-  _context: unknown = undefined
+  _context?: unknown
 ): MemoizedFunction<A, ReturnType> {
   return (...args: A): ReturnType => {
     try {
