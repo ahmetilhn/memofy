@@ -7,6 +7,12 @@ import { type MemoizedFunction } from "./types/memoized-function.type";
 
 const functionCacheStore = new FunctionCacheStore();
 const dependencyCacheStore = new DependencyCacheStore();
+if (typeof window !== "undefined") {
+  window._memofy_ = {
+    functions: functionCacheStore.store,
+    dependencies: dependencyCacheStore.store,
+  };
+}
 
 export default function memofy<A extends Args, ReturnType extends any>(
   _functionToMemoize: (...args: Array<unknown>) => ReturnType,

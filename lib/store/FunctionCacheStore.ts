@@ -1,7 +1,7 @@
 import { deepClone, isDeepEqual } from "amigo-js";
 import { type Args } from "../types/args.type";
 class FunctionCacheStore<A extends Args, R extends any> {
-  private readonly store: WeakMap<Function, Map<A, any>>;
+  public readonly store: WeakMap<Function, Map<A, any>>;
 
   constructor() {
     this.store = new WeakMap();
