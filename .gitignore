@@ -17,7 +17,7 @@ coverage
 .DS_Store
 # Mono auto generated files
 mono_crash.*
-
+demos/typescript/dist
 
 # Build results
 [Dd]ebug/
