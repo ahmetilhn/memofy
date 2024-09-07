@@ -1,6 +1,6 @@
 {
   "name": "memofy",
-  "version": "0.1.0-beta.2",
+  "version": "0.1.0-beta.3",
   "description": "Prevents re-execution of large javascript functions that have been processed once with the same parameter.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
