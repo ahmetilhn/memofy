@@ -1,5 +1,4 @@
 import memofy from "memofy";
-
 const product = { name: "Test Product", price: 36 };
 
 const getProductPrice = (_product: typeof product): string => {
