@@ -1,10 +1,16 @@
-# memofy 🚀
+# memofy 🚀 - Lightweight Memoization for JavaScript Functions (1.3KB)
 
 ### Cache mechanism(memoizer) for functions executed with the same parameters (Only 1.3 KB)
 
 This project provides a memoize function for improving performance in JavaScript or TypeScript projects by caching the results of expensive function calls. By memoizing, repeated calls with the same arguments will return the cached result, speeding up execution.
 
 This module works like react's useMemo hook but NOT required react. You can use any framework or pure javascript projects
+
+<p align="center">
+  <a href="https://www.npmjs.com/package/memofy"><img alt="NPM" src="https://img.shields.io/npm/v/memofy.svg" /></a>
+  <a href="https://img.shields.io/npm/dy/memofy"><img alt="NPM" src="https://img.shields.io/npm/dy/memofy" /></a>
+  <a href="https://github.com/transitive-bullshit/agentic/blob/main/license"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue" /></a>
+</p>
 
 ## Features
 
@@ -20,11 +26,10 @@ This module works like react's useMemo hook but NOT required react. You can use 
 
 **Using Memofy you can reduce the execution time of your functions by up to 1500 times. The following results were obtained by testing on a heavy function.** 💪🏼
 
-| Test Case                  | Function Execute Time (ms) |
-| -------------------------- | -------------------------- |
-| **With Memofy (UNCACHED)** | 50.65 ms                   |
-| **With Memofy (CACHED)**   | 0.031 ms                   |
-| **Without Memofy**         | 57.571 ms                  |
+| Test Case                | Function Execute Time (ms) |
+| ------------------------ | -------------------------- |
+| **With Memofy (CACHED)** | 0.083 ms                   |
+| **Without Memofy**       | 57.571 ms                  |
 
 AND very easy
 
@@ -45,11 +50,15 @@ const heavyMethod = memofy((arg1, arg2, ...args) => {
 
 ##### NPM
 
-`npm install memofy`
+```bash
+npm install memofy
+```
 
 ##### YARN
 
-`yarn add memofy`
+```bash
+yarn add memofy
+```
 
 ## Usage case
 
@@ -79,24 +88,21 @@ _If you want the method to run again with the same parameter according to some d
 ```js
 import memofy from "memofy";
 
-const taxRatio = 0.5;
 const product = { title: "Test product", price: 10 };
 
-const calculateTax = () => {
+const calculateTax = (taxRatio) => {
   // Calculate tax by product price
   // Heavy calculation
   return taxRatio * product.price;
 };
 
-const memoizedConcatPhoneNumber = memofy(calculateTax, [product, taxRatio]);
+const memoizedCalculateTax = memofy(calculateTax, [product]);
 
-calculatedPrice = calculateTax(); // Runs concatPhoneNumber when first run
+calculateTax(2); // Runs calculateTax when first run -> 20
+calculateTax(2); // // Don't run because fetched from cache (same parameter and same deps) -> 20
 
 product.price = 40;
-let calculatedPrice = calculateTax(); // Runs concatPhoneNumber because product dep changed
-
-taxRatio = 0.8;
-calculatedPrice = calculateTax(); // Runs concatPhoneNumber because taxRatio changed
+calculateTax(3); // Runs calculateTax because product dep changed -> 120
 ```
 
 ```js
@@ -107,20 +113,22 @@ const products = [
 ];
 
 // It is costly to cycle through 100 products each time. Just keep the result in the cache when it runs once.
-const getTotalPrice = () => {
+const getTotalPrice = (fixPrice) => {
   return products.reduce((acc, curr) => acc + curr.price, 0);
 };
 
 const _getTotalPrice = memofy(getTotalPrice, [products]);
-getTotalPrice(); // Runs getTotalPrice once
-getTotalPrice(); // Don't run because fetched from cache
+getTotalPrice(0); // Runs getTotalPrice once
+getTotalPrice(0); // Don't run because fetched from cache
 products.push({
   /** a few products */
 });
-getTotalPrice(); // Runs again getTotalPrice because products is changed
+getTotalPrice(2); // Runs again getTotalPrice because products and parameter changed
 ```
 
 ### With context
+
+_If context(this, globalContex e.g) is used in the function you want to cache, you can pass the context parameter._
 
 ```js
 import memofy from "memofy";
@@ -131,25 +139,24 @@ const getName = (suffix) => {
   return `${suffix} ${this.user.name}`;
 };
 const memoizedGetName = memofy(getName, [], this);
-memoizedGetName("Mr"); // Mr Jack
+memoizedGetName("Mr"); // Result is Mr Jack
 
 this.user.name = "John";
-memoizedGetName("Mr"); // Mr John
+memoizedGetName("Mr"); // Result is Mr John because context data changed
 ```
 
 ## Declaration for typescript
 
 ```ts
-type Deps = Readonly<Array<any>>;
 type Args = Array<any>;
 
-type MemoizedFunction<A extends Args, ReturnType> = (
-  ...args: A
-) => ReturnType;
+type Deps = Readonly<Array<any>>;
 
-function memofy<Args extends Readonly<A extends Args, ReturnType>(
+type MemoizedFunction<A extends Args, ReturnType> = (...args: A) => ReturnType;
+
+declare function memofy<A extends Args, ReturnType extends any>(
   _functionToMemoize: (...args: Array<unknown>) => ReturnType,
-  _deps?: Deps
+  _deps?: Deps,
   _context?: unknown
 ): MemoizedFunction<A, ReturnType>;
 ```
@@ -168,16 +175,14 @@ _Performance results on a complex function that distinguishes prime numbers. [Pe
 
 _Tests were written for all cases and all parameter types. [Tests](https://github.com/ahmetilhn/memofy/tree/master/__tests__)_
 
-| File                  | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s |
-| --------------------- | ------- | -------- | ------- | ------- | ----------------- |
-| All files             | 90.9    | 93.33    | 100     | 90.32   |
-| lib                   | 84.61   | 100      | 100     | 83.33   |
-| index.ts              | 84.61   | 100      | 100     | 83.33   | 31-32             |
-| lib/helpers           | 75      | 75       | 100     | 75      |
-| stringifier.helper.ts | 75      | 75       | 100     | 75      | 6                 |
-| lib/store             | 100     | 100      | 100     | 100     |
-| CacheStore.ts         | 100     | 100      | 100     | 100     |
-| DepsStore.ts          | 100     | 100      | 100     | 100     |
+| File                       | % Stmts | % Branch | % Funcs | % Lines |
+| -------------------------- | ------- | -------- | ------- | ------- |
+| All files                  | 90.69   | 86.95    | 100     | 94.59   |
+| lib                        | 88.88   | 92.3     | 100     | 87.5    |
+| index.ts                   | 88.88   | 92.3     | 100     | 87.5    |
+| lib/store                  | 92      | 80       | 100     | 100     |
+| DependencyCacheStore.ts.ts | 90      | 75       | 100     | 100     |
+| FunctionCacheStore.ts      | 93.33   | 83.33    | 100     | 100     |
 
 ## Contributing
 
