@@ -1,5 +1,3 @@
 import { type Args } from "./args.type";
 
-export type MemoizedFunction<A extends Args, ReturnType> = (
-  ...args: A
-) => ReturnType;
+export type MemoizedFunction<R, P> = (...args: Args<P>) => R;

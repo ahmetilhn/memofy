@@ -8,19 +8,19 @@ class DependencyCacheStore<D extends Deps> {
     this.store = new WeakMap<Function, D>();
   }
 
-  set(_key: Function, _deps: D): void {
-    this.store.set(_key, deepClone(_deps));
+  set(key: Function, deps: D): void {
+    this.store.set(key, deepClone(deps));
   }
 
-  get(_key: Function): D | undefined {
-    return this.store.get(_key);
+  get(key: Function): D | undefined {
+    return this.store.get(key);
   }
 
-  isChanged(_key: Function, _deps: D): boolean {
-    if (!_deps) return false;
-    const deps = this.get(_key);
+  isChanged(key: Function, depsParam: D): boolean {
+    if (!depsParam) return false;
+    const deps = this.get(key);
     if (!deps) return false;
-    return _deps.some((_dep, index) => !isDeepEqual(deps[index], _dep));
+    return depsParam.some((dep, index) => !isDeepEqual(deps[index], dep));
   }
 }
 

@@ -7,28 +7,28 @@ class FunctionCacheStore<A extends Args, R extends any> {
     this.store = new WeakMap();
   }
 
-  set(_key: Function, _args: A, _result: any): void {
-    if (this.hasCacheByFunction(_key)) {
-      this.store.get(_key)?.set(deepClone(_args), _result);
+  set(key: Function, args: A, result: any): void {
+    if (this.hasCacheByFunction(key)) {
+      this.store.get(key)?.set(deepClone(args), result);
       return;
     }
     const cacheEntry = new Map();
-    cacheEntry.set(deepClone(_args), _result);
-    this.store.set(_key, cacheEntry);
+    cacheEntry.set(deepClone(args), result);
+    this.store.set(key, cacheEntry);
   }
 
-  getCacheByArgs(_key: Function, _args: A): R | undefined {
-    const cachedFunc = this.store.get(_key);
+  getCacheByArgs(key: Function, args: A): R | undefined {
+    const cachedFunc = this.store.get(key);
     if (!cachedFunc) return undefined;
     for (const [cachedArgs, result] of cachedFunc.entries()) {
-      if (isDeepEqual(cachedArgs, _args)) {
+      if (isDeepEqual(cachedArgs, args)) {
         return result;
       }
     }
     return undefined;
   }
-  hasCacheByFunction(_key: Function): boolean {
-    return this.store.has(_key);
+  hasCacheByFunction(key: Function): boolean {
+    return this.store.has(key);
   }
 }
 

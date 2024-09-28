@@ -1,1 +1,1 @@
-export type Args = Array<any>;
+export type Args<P = any> = Array<P>;

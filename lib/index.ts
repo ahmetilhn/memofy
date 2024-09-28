@@ -14,42 +14,45 @@ if (typeof window !== "undefined") {
   };
 }
 
-export default function memofy<A extends Args, ReturnType extends any>(
-  _functionToMemoize: (...args: Array<unknown>) => ReturnType,
-  _deps: Deps = [],
-  _context?: unknown
-): MemoizedFunction<A, ReturnType> {
-  return (..._args: A): ReturnType => {
+export default function memofy<R = any, P = any>(
+  functionToMemoize: MemoizedFunction<R, P>,
+  deps: Deps = [],
+  context?: unknown
+): MemoizedFunction<R, P> {
+  return (...args: Args<P>): R => {
     try {
       // IF IT HAS CACHE
       if (
-        functionCacheStore.hasCacheByFunction(_functionToMemoize) &&
-        !dependencyCacheStore.isChanged(_functionToMemoize, _deps)
+        functionCacheStore.hasCacheByFunction(functionToMemoize) &&
+        !dependencyCacheStore.isChanged(functionToMemoize, deps)
       ) {
         const cachedResult = functionCacheStore.getCacheByArgs(
-          _functionToMemoize,
-          _args
+          functionToMemoize,
+          args
         );
 
-        if (cachedResult) return cachedResult as ReturnType;
+        if (cachedResult) return cachedResult as R;
       }
 
       // IF IT HASN'T ANY CACHE
-      const result = _functionToMemoize.apply(_context, _args);
+      const result = functionToMemoize.apply<unknown, Array<P>, R>(
+        context,
+        args
+      );
 
-      if (_args.length) {
-        functionCacheStore.set(_functionToMemoize, _args, result);
+      if (args.length) {
+        functionCacheStore.set(functionToMemoize, args, result);
       }
 
       // SET DEPENDENCY CACHE STORE FOR CONTROL CHANGE NEXT CALLING
-      if (_deps.length > 0) dependencyCacheStore.set(_functionToMemoize, _deps);
+      if (deps.length > 0) dependencyCacheStore.set(functionToMemoize, deps);
 
-      return result;
+      return result as R;
     } catch (err: unknown) {
       console.error("memofy executing error", err);
 
       // RETURN PURE FUNCTION WHEN THROW ERROR
-      return _functionToMemoize.apply(_context, _args);
+      return functionToMemoize.apply<unknown, Array<P>, R>(context, args);
     }
   };
 }
