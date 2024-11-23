@@ -1,4 +1,5 @@
-import memofy from "memofy";
+import { memoize, initMemofy } from "memofy";
+initMemofy();
 const product = { name: "Test Product", price: 36 };
 
 const getProductPrice = (_product: typeof product): string => {
@@ -7,7 +8,7 @@ const getProductPrice = (_product: typeof product): string => {
 console.log(performance.now(), "ggg");
 console.log(getProductPrice(product));
 console.log(performance.now());
-const _getPrice = memofy(getProductPrice, []);
+const _getPrice = memoize(getProductPrice, []);
 // Runs once because uncached
 console.log(performance.now());
 console.log(_getPrice(product)); // 36
@@ -28,7 +29,7 @@ const getProductName = (): string => {
   return product.name;
 };
 
-const _getProductName = memofy(getProductName, [product]);
+const _getProductName = memoize(getProductName, [product]);
 
 // Runs once because uncached
 console.log(performance.now());

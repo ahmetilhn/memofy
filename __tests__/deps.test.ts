@@ -1,10 +1,11 @@
-import memofy from "../lib";
+import { initMemofy, memoize } from "../lib";
+initMemofy();
 describe("Dependencies Tests", () => {
   const product = {
     price: 10,
   };
   const getPrice = jest.fn((taxRatio: number = 10) => product.price * taxRatio);
-  const _getPrice = memofy(getPrice, [product]);
+  const _getPrice = memoize(getPrice, [product]);
   beforeEach(() => {
     _getPrice(10);
   });

@@ -34,13 +34,13 @@ This module works like react's useMemo hook but NOT required react. You can use 
 AND very easy
 
 ```js
-import memofy from "memofy";
+import {memoize} from "memofy";
 
 const dep1 = /** Variable to track change */
 
-const heavyMethod = memofy((arg1, arg2, ...args) => {
+const heavyMethod = memoize((...args) => {
  // calculate something then return
-}, [dep1, dep2, ...deps]);
+}, [...deps]);
 
 // heavyMethod looks at the deps and arguments every time it is called.
 // If there is no change, it brings it from the cache. If there is a change, it runs the function again
@@ -60,6 +60,17 @@ npm install memofy
 yarn add memofy
 ```
 
+## Initialization
+
+_You should init memofy. It is provide initialization function and deps store. **This is important step**. It should trigger once your project lifecycle._
+
+```js
+import { initMemofy } from "memofy";
+initMemofy();
+/*If you want watch and debug memofy store pass this param */
+initMemofy({ trace: true });
+```
+
 ## Usage case
 
 ### Without deps parameters
@@ -67,14 +78,14 @@ yarn add memofy
 _In the following process, when the concatPhoneNumber method is called again with the same parameters, the function is not executed again, it fetches the result from the cache._
 
 ```js
-import memofy from "memofy";
+import { memoize } from "memofy";
 
 const concatPhoneNumber = (extension, number) => {
   // Heavy calculation
   // return result
 };
 
-const memoizedConcatPhoneNumber = memofy(concatPhoneNumber, []);
+const memoizedConcatPhoneNumber = memoize(concatPhoneNumber, []);
 
 memoizedConcatPhoneNumber(90, 555); // Runs concatPhoneNumber once
 memoizedConcatPhoneNumber(90, 555); // Don't run because fetched from cache (same parameter)
@@ -86,7 +97,7 @@ memoizedConcatPhoneNumber(90, 552); // Runs concatPhoneNumber because params is 
 _If you want the method to run again with the same parameter according to some dependencies, you can pass the deps parameter as follows._
 
 ```js
-import memofy from "memofy";
+import { memoize } from "memofy";
 
 const product = { title: "Test product", price: 10 };
 
@@ -96,7 +107,7 @@ const calculateTax = (taxRatio) => {
   return taxRatio * product.price;
 };
 
-const memoizedCalculateTax = memofy(calculateTax, [product]);
+const memoizedCalculateTax = memoize(calculateTax, [product]);
 
 calculateTax(2); // Runs calculateTax when first run -> 20
 calculateTax(2); // // Don't run because fetched from cache (same parameter and same deps) -> 20
@@ -106,7 +117,7 @@ calculateTax(3); // Runs calculateTax because product dep changed -> 120
 ```
 
 ```js
-import memofy from "memofy";
+import { memoize } from "memofy";
 
 const products = [
   /**Let's say there are more than 100 products */
@@ -117,7 +128,7 @@ const getTotalPrice = (fixPrice) => {
   return products.reduce((acc, curr) => acc + curr.price, 0);
 };
 
-const _getTotalPrice = memofy(getTotalPrice, [products]);
+const _getTotalPrice = memoize(getTotalPrice, [products]);
 getTotalPrice(0); // Runs getTotalPrice once
 getTotalPrice(0); // Don't run because fetched from cache
 products.push({
@@ -131,14 +142,14 @@ getTotalPrice(2); // Runs again getTotalPrice because products and parameter cha
 _If context(this, globalContex e.g) is used in the function you want to cache, you can pass the context parameter._
 
 ```js
-import memofy from "memofy";
+import { memoize } from "memofy";
 
 this.user.name = "Jack"; // For example inject name to context
 
 const getName = (suffix) => {
   return `${suffix} ${this.user.name}`;
 };
-const memoizedGetName = memofy(getName, [], this);
+const memoizedGetName = memoize(getName, [], this);
 memoizedGetName("Mr"); // Result is Mr Jack
 
 this.user.name = "John";
@@ -148,17 +159,21 @@ memoizedGetName("Mr"); // Result is Mr John because context data changed
 ## Declaration for typescript
 
 ```ts
-type Args = Array<any>;
+type DepsType = Array<any>;
 
-type Deps = Readonly<Array<any>>;
+type MemoizedFunctionType<R, P extends Array<any>> = (...args: P) => R;
 
-type MemoizedFunction<A extends Args, ReturnType> = (...args: A) => ReturnType;
+type InitializationConfigType = {
+  trace?: boolean;
+};
 
-declare function memofy<A extends Args, ReturnType extends any>(
-  _functionToMemoize: (...args: Array<unknown>) => ReturnType,
-  _deps?: Deps,
-  _context?: unknown
-): MemoizedFunction<A, ReturnType>;
+declare const initMemofy: ({ trace }?: InitializationConfigType) => void;
+
+declare const memoize: <R = any>(
+  functionToMemoize: MemoizedFunctionType<R, Array<any>>,
+  deps?: DepsType,
+  context?: unknown
+) => MemoizedFunctionType<R, Parameters<typeof functionToMemoize>>;
 ```
 
 ## Performance result

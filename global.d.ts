@@ -7,5 +7,5 @@ declare namespace NodeJS {
 }
 
 interface Window {
-  _memofy_: { functions: WeakMap; dependencies: WeakMap };
+  __memofy__: { functions: WeakMap; dependencies: WeakMap };
 }

@@ -1,11 +1,12 @@
-import memofy from "../lib";
+import { initMemofy, memoize } from "../lib";
+initMemofy();
 describe("Caching Tests", () => {
   const concatPhoneNumber = jest.fn(
     (_extension: number, _number: number): string => {
       return `${_extension}+${_number}`;
     }
   );
-  const _concatPhoneNumber = memofy(concatPhoneNumber);
+  const _concatPhoneNumber = memoize(concatPhoneNumber);
   beforeEach(() => {
     _concatPhoneNumber(90, 5555552);
   });
@@ -30,7 +31,7 @@ describe("Caching Tests", () => {
     const getPrice = jest.fn(
       (product: { price: number }): number => product.price
     );
-    const _getPrice = memofy(getPrice, []);
+    const _getPrice = memoize(getPrice, []);
     expect(_getPrice({ price: 10 })).toBe(10);
     const product = { price: 22 };
     expect(_getPrice(product)).toBe(22);
@@ -62,7 +63,6 @@ describe("Caching Tests", () => {
     const getPhoneNumber = jest.fn(
       (phone: Phone, countryCode: boolean): string => {
         let check = 0;
-
         if (phone.areaCode.startsWith("5")) {
           check = -1;
         } else {
@@ -107,14 +107,10 @@ describe("Caching Tests", () => {
         return "";
       }
     );
-    const _getPriorityPhone = memofy<
-      [phones: Phone[], isCountryCode: boolean],
-      string
-    >(getPriorityPhone);
-    const _getPhoneNumber = memofy<
-      [phone: Phone, countryCode: boolean],
-      string
-    >(getPhoneNumber);
+    const _getPriorityPhone = memoize<string>(getPriorityPhone);
+
+    const _getPhoneNumber = memoize<string>(getPhoneNumber);
+
     const myPhones = [
       {
         countryCode: "+90",
@@ -151,7 +147,7 @@ describe("Caching Tests", () => {
         return name;
       }),
     };
-    const _getName = memofy(arg.getName);
+    const _getName = memoize(arg.getName);
     expect(_getName("Jack")).toBe("Jack");
     expect(_getName("Jack")).toBe("Jack");
     expect(arg.getName).toHaveBeenCalledTimes(1);
@@ -163,7 +159,7 @@ describe("Caching Tests", () => {
     let depFunc = () => {
       return 10;
     };
-    const _getNumber = memofy(getNumber, [depFunc]);
+    const _getNumber = memoize(getNumber, [depFunc]);
     expect(_getNumber(2)).toBe(2 * 10);
     depFunc = () => {
       return 5;
@@ -178,7 +174,7 @@ describe("Caching Tests", () => {
     const getName = jest.fn(function (suffix: string) {
       return `${suffix} ${this.name}`;
     });
-    const memoizedGetName = memofy(getName, [context], context);
+    const memoizedGetName = memoize(getName, [context], context);
     expect(memoizedGetName("Mr")).toBe("Mr John");
     expect(memoizedGetName("Mr")).toBe("Mr John");
     expect(memoizedGetName("Mr")).toBe("Mr John");
@@ -194,7 +190,7 @@ describe("Caching Tests", () => {
     const getName = jest.fn((suffix: string) => {
       return `${suffix} ${global.user.name}`;
     });
-    const memoizedGetName = memofy(getName, [], global);
+    const memoizedGetName = memoize(getName, [], global);
     expect(memoizedGetName("Mr")).toBe("Mr Jack");
     expect(memoizedGetName("Mr")).toBe("Mr Jack");
     expect(getName).toHaveBeenCalledTimes(1);

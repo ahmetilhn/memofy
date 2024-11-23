@@ -1,4 +1,5 @@
-import memofy from "../lib";
+import { initMemofy, memoize } from "../lib";
+initMemofy();
 describe("Performance Tests", () => {
   test("should execute heavy method with and without caching", async () => {
     const heavyComputation = jest.fn(
@@ -28,7 +29,7 @@ describe("Performance Tests", () => {
     );
 
     // Before caching
-    const _heavyComputation = memofy(heavyComputation);
+    const _heavyComputation = memoize(heavyComputation);
     const startTime = performance.now();
     const result = await _heavyComputation(91012323);
     const endTime = performance.now();

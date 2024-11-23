@@ -1,8 +1,7 @@
 import FunctionCacheStore from "../lib/store/FunctionCacheStore";
-import { type Args } from "../lib/types/args.type";
 
 describe("CacheStore Tests", () => {
-  let functionCacheStore: FunctionCacheStore<Args, any>;
+  let functionCacheStore: FunctionCacheStore;
   beforeEach(() => {
     functionCacheStore = new FunctionCacheStore();
   });
@@ -26,7 +25,7 @@ describe("CacheStore Tests", () => {
     expect(functionCacheStore.getCacheByArgs(getAge, paramArgs)).toEqual(24);
 
     getAge = null;
-    expect(functionCacheStore.hasCacheByFunction(getAge)).toBeFalsy();
+    expect(functionCacheStore.hasCache(getAge)).toBeFalsy();
   });
 
   test("should get cache", () => {
@@ -48,12 +47,12 @@ describe("CacheStore Tests", () => {
       paramArgs,
       sumTotal(paramArgs[0], sumTotal[1])
     );
-    expect(functionCacheStore.hasCacheByFunction(sumTotal)).toBeTruthy();
+    expect(functionCacheStore.hasCache(sumTotal)).toBeTruthy();
     expect(
       functionCacheStore.getCacheByArgs(sumTotal, paramArgs)
     ).toBeDefined();
 
     sumTotal = function dummy() {};
-    expect(functionCacheStore.hasCacheByFunction(sumTotal)).toBeFalsy();
+    expect(functionCacheStore.hasCache(sumTotal)).toBeFalsy();
   });
 });

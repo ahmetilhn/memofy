@@ -1,7 +1,7 @@
 import { deepClone, isDeepEqual } from "amigo-js";
-import { type Deps } from "../types/deps.type";
+import { DepsType } from "../types/DepsType";
 
-class DependencyCacheStore<D extends Deps> {
+class DepsCacheStore<D extends DepsType = DepsType> {
   public readonly store: WeakMap<Function, D>;
 
   constructor() {
@@ -24,4 +24,4 @@ class DependencyCacheStore<D extends Deps> {
   }
 }
 
-export default DependencyCacheStore;
+export default DepsCacheStore;
