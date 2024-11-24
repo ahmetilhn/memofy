@@ -67,8 +67,10 @@ _You should init memofy. It is provide initialization function and deps store. *
 ```js
 import { initMemofy } from "memofy";
 initMemofy();
-/*If you want watch and debug memofy store pass this param */
+/*If you want watch and debug memofy store on console pass this param */
 initMemofy({ trace: true });
+/*If you want see returned cached value from memofy pass this param */
+initMemofy({ hasLogs: true });
 ```
 
 ## Usage case
@@ -165,15 +167,20 @@ type MemoizedFunctionType<R, P extends Array<any>> = (...args: P) => R;
 
 type InitializationConfigType = {
   trace?: boolean;
+  hasLogs?: boolean;
 };
 
-declare const initMemofy: ({ trace }?: InitializationConfigType) => void;
-
+declare const initMemofy: ({
+  trace,
+  hasLogs,
+}?: InitializationConfigType) => Promise<void>;
 declare const memoize: <R = any>(
   functionToMemoize: MemoizedFunctionType<R, Array<any>>,
   deps?: DepsType,
   context?: unknown
 ) => MemoizedFunctionType<R, Parameters<typeof functionToMemoize>>;
+
+export { initMemofy, memoize };
 ```
 
 ## Performance result

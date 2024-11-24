@@ -1,6 +1,7 @@
 import { initMemofy, memoize } from "../lib";
-initMemofy();
+
 describe("Dependencies Tests", () => {
+  initMemofy();
   const product = {
     price: 10,
   };

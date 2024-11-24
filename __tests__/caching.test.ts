@@ -1,6 +1,7 @@
 import { initMemofy, memoize } from "../lib";
-initMemofy();
+
 describe("Caching Tests", () => {
+  initMemofy();
   const concatPhoneNumber = jest.fn(
     (_extension: number, _number: number): string => {
       return `${_extension}+${_number}`;

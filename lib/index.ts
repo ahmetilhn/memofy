@@ -4,13 +4,20 @@ import DepsCacheStore from "./store/DepsCacheStore";
 import { DepsType } from "./types/DepsType";
 import { MemoizedFunctionType } from "./types/MemoizedFunctionType";
 import InitializationConfigType from "./types/InitializationConfigType";
+import { writeToConsole } from "./helpers/logger";
 
 let functionCacheStore: InstanceType<typeof FunctionCacheStore>;
 let depsCacheStore: InstanceType<typeof DepsCacheStore>;
 
-const initMemofy = ({ trace = false }: InitializationConfigType = {}) => {
+let hasCachedResultLog = false;
+let isMemofyInitialize = false;
+const initMemofy = async ({
+  trace = false,
+  hasLogs = false,
+}: InitializationConfigType = {}) => {
   functionCacheStore = new FunctionCacheStore();
   depsCacheStore = new DepsCacheStore();
+  hasCachedResultLog = hasLogs;
   if (trace && typeof window !== "undefined") {
     window.__memofy__ = {
       functions: functionCacheStore.store,
@@ -18,6 +25,7 @@ const initMemofy = ({ trace = false }: InitializationConfigType = {}) => {
     };
     console.info("Injected memofy tracing to console as '__memofy__'");
   }
+  isMemofyInitialize = true;
 };
 
 const memoize = <R = any>(
@@ -28,8 +36,14 @@ const memoize = <R = any>(
   return (
     ...args: Parameters<typeof functionToMemoize>
   ): ReturnType<typeof functionToMemoize> => {
+    if (!isMemofyInitialize)
+      return functionToMemoize.apply<
+        typeof context,
+        Parameters<typeof functionToMemoize>,
+        R
+      >(context, args);
+
     try {
-      // IF IT HAS CACHE
       if (
         functionCacheStore.hasCache(functionToMemoize) &&
         !depsCacheStore.isChanged(functionToMemoize, deps)
@@ -39,10 +53,14 @@ const memoize = <R = any>(
           args
         );
 
-        if (cachedResult) return cachedResult as R;
+        if (cachedResult) {
+          if (hasCachedResultLog)
+            writeToConsole(functionToMemoize.name, cachedResult);
+
+          return cachedResult as R;
+        }
       }
 
-      // IF IT HASN'T ANY CACHE
       const result = functionToMemoize.apply<
         typeof context,
         Parameters<typeof functionToMemoize>,
@@ -50,14 +68,12 @@ const memoize = <R = any>(
       >(context, args);
 
       if (args.length) functionCacheStore.set(functionToMemoize, args, result);
-
-      // SET DEPENDENCY CACHE STORE FOR CONTROL CHANGE WHILE NEXT CALL
       if (deps.length) depsCacheStore.set(functionToMemoize, deps);
 
       return result as R;
     } catch (err: unknown) {
       console.error("memofy executing error", err);
-      // RETURN PURE FUNCTION WHEN THROW ERROR
+
       return functionToMemoize.apply<
         typeof context,
         Parameters<typeof functionToMemoize>,
