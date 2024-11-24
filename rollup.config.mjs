@@ -7,8 +7,8 @@ export default [
     input: "./lib/index.ts",
     output: {
       file: "./build/index.js",
-      format: "umd",
-      name: "memofy",
+      format: "cjs",
+      exports: "named",
     },
     plugins: [
       typescript({
