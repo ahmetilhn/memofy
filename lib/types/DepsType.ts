@@ -1,1 +1,3 @@
-export type DepsType = Array<any>;
+type Deps = Array<any>;
+
+export default Deps;
