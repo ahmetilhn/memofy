@@ -5,6 +5,7 @@ import Deps from "./types/DepsType";
 import InitializationConfig from "./types/InitializationConfig";
 import { writeToConsole } from "./helpers/logger";
 import MemoizedFunction from "./types/MemoizedFunction";
+import { isClient } from "amigo-js";
 
 let functionCacheStore: InstanceType<typeof FunctionCacheStore>;
 let depsCacheStore: InstanceType<typeof DepsCacheStore>;
@@ -20,7 +21,7 @@ const initMemofy = async ({
   depsCacheStore = new DepsCacheStore();
   hasCachedResultLog = hasLogs;
 
-  if (trace && typeof window !== "undefined") {
+  if (trace && isClient()) {
     window.__memofy__ = {
       functions: functionCacheStore.store,
       dependencies: depsCacheStore.store,
