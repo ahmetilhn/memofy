@@ -7,8 +7,8 @@ This project provides a memoize function for improving performance in JavaScript
 This module works like react's useMemo hook but NOT required react. You can use any framework or pure javascript projects
 
 <p align="center">
-  <a href="https://www.npmjs.com/package/memofy"><img alt="NPM" src="https://img.shields.io/npm/v/memofy.svg" /></a>
-  <a href="https://img.shields.io/npm/dy/memofy"><img alt="NPM" src="https://img.shields.io/npm/dy/memofy" /></a>
+  <a href="https://www.npmjs.com/package/@ahmetilhn/memofy"><img alt="NPM" src="https://img.shields.io/npm/v/@ahmetilhn/memofy.svg" /></a>
+  <a href="https://img.shields.io/npm/dy/@ahmetilhn/memofy"><img alt="NPM" src="https://img.shields.io/npm/dy/@ahmetilhn/memofy" /></a>
   <a href="https://github.com/transitive-bullshit/agentic/blob/main/license"><img alt="MIT License" src="https://img.shields.io/badge/license-MIT-blue" /></a>
 </p>
 
