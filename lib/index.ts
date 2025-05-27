@@ -45,43 +45,33 @@ const memoize = <F extends MemoizedFunction>(
         ReturnType<F>
       >(context, args);
 
-    try {
-      if (
-        functionCacheStore.hasCache(functionToMemoize) &&
-        !depsCacheStore.isChanged(functionToMemoize, deps)
-      ) {
-        const cachedResult = functionCacheStore.getCacheByArgs(
-          functionToMemoize,
-          args
-        );
+    if (
+      functionCacheStore.hasCache(functionToMemoize) &&
+      !depsCacheStore.isChanged(functionToMemoize, deps)
+    ) {
+      const cachedResult = functionCacheStore.getCacheByArgs(
+        functionToMemoize,
+        args
+      );
 
-        if (cachedResult) {
-          if (hasCachedResultLog)
-            writeToConsole(functionToMemoize.name, cachedResult);
+      if (cachedResult) {
+        if (hasCachedResultLog)
+          writeToConsole(functionToMemoize.name, cachedResult);
 
-          return cachedResult as ReturnType<F>;
-        }
+        return cachedResult as ReturnType<F>;
       }
-
-      const result = functionToMemoize.apply<
-        typeof context,
-        Parameters<typeof functionToMemoize>,
-        ReturnType<F>
-      >(context, args);
-
-      if (args.length) functionCacheStore.set(functionToMemoize, args, result);
-      if (deps.length) depsCacheStore.set(functionToMemoize, deps);
-
-      return result as ReturnType<F>;
-    } catch (err: unknown) {
-      console.error("memofy executing error", err);
-
-      return functionToMemoize.apply<
-        typeof context,
-        Parameters<typeof functionToMemoize>,
-        ReturnType<F>
-      >(context, args);
     }
+
+    const result = functionToMemoize.apply<
+      typeof context,
+      Parameters<typeof functionToMemoize>,
+      ReturnType<F>
+    >(context, args);
+
+    if (args.length) functionCacheStore.set(functionToMemoize, args, result);
+    if (deps.length) depsCacheStore.set(functionToMemoize, deps);
+
+    return result;
   }) as ReturnType<typeof functionToMemoize>;
 };
 

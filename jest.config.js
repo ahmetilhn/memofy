@@ -9,4 +9,12 @@ module.exports = {
   testEnvironment: "jsdom",
   coverageDirectory: "coverage",
   setupFilesAfterEnv: ["<rootDir>/jest.setup.js"],
+  coverageThreshold: {
+    global: {
+      branches: 81,
+      functions: 92,
+      lines: 86,
+      statements: 83,
+    },
+  },
 };

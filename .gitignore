@@ -10,7 +10,6 @@
 *.userosscache
 *.sln.docstates
 build
-.vscode
 coverage
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs

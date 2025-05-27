@@ -1,6 +1,6 @@
 {
   "name": "@ahmetilhn/memofy",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "Prevents re-execution of large javascript functions that have been processed once with the same parameter.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
