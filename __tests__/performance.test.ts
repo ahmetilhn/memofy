@@ -1,7 +1,7 @@
-import { initMemofy, memoize } from "../lib";
+import Memofy from "../lib";
 
 describe("Performance Tests", () => {
-  initMemofy();
+  const { memoize } = new Memofy();
   test("should execute heavy method with and without caching", async () => {
     const heavyComputation = jest.fn(
       async (inputNumber: number): Promise<number> => {

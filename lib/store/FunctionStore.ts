@@ -1,6 +1,6 @@
-import { deepClone, isDeepEqual } from "amigo-js";
+import { deepClone, isDeepEqual } from "@ahmetilhn/handy-utils";
 
-class FunctionCacheStore<A extends Array<any> = Array<any>> {
+class FunctionStore<A extends Array<any> = Array<any>> {
   public readonly store: WeakMap<Function, Map<A, any>>;
 
   constructor() {
@@ -32,4 +32,4 @@ class FunctionCacheStore<A extends Array<any> = Array<any>> {
   }
 }
 
-export default FunctionCacheStore;
+export default FunctionStore;

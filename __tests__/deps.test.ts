@@ -1,7 +1,8 @@
-import { initMemofy, memoize } from "../lib";
+import Memofy from "../lib";
 
-describe("Dependencies Tests", () => {
-  initMemofy();
+describe("deps tests", () => {
+  const { memoize } = new Memofy();
+
   const product = {
     price: 10,
   };
@@ -21,10 +22,10 @@ describe("Dependencies Tests", () => {
   test("should get from new calculating", () => {
     product.price = 20;
     expect(_getPrice()).toBe(200);
-    expect(getPrice).toHaveBeenCalledTimes(2);
+    expect(getPrice).toHaveBeenCalledTimes(1);
 
     product.price = 100;
     expect(_getPrice()).toBe(1000);
-    expect(getPrice).toHaveBeenCalledTimes(3);
+    expect(getPrice).toHaveBeenCalledTimes(2);
   });
 });

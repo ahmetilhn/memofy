@@ -1,6 +1,6 @@
 {
   "name": "@ahmetilhn/memofy",
-  "version": "1.1.2",
+  "version": "2.0.0",
   "description": "Prevents re-execution of large javascript functions that have been processed once with the same parameter.",
   "main": "build/index.js",
   "types": "build/index.d.ts",
@@ -40,22 +40,23 @@
   },
   "homepage": "https://github.com/ahmetilhn/memofy#readme",
   "devDependencies": {
-    "@babel/core": "^7.25.2",
-    "@babel/preset-env": "^7.25.4",
-    "@babel/preset-typescript": "^7.24.7",
+    "@babel/core": "^7.27.4",
+    "@babel/preset-env": "^7.27.2",
+    "@babel/preset-typescript": "^7.27.1",
     "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^11.1.6",
-    "@types/jest": "^29.5.12",
+    "@types/jest": "^29.5.14",
     "babel-jest": "^29.7.0",
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
-    "rollup": "^4.21.0",
-    "rollup-plugin-dts": "^6.1.1",
-    "tslib": "^2.7.0"
+    "rollup": "^4.41.1",
+    "rollup-plugin-dts": "^6.2.1",
+    "ts-jest": "^29.3.4",
+    "typescript": "^5.8.3"
   },
   "peerDependencies": {
-    "amigo-js": "^3.1.1"
+    "@ahmetilhn/handy-utils": "^3.2.3"
   }
 }

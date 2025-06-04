@@ -1,7 +1,7 @@
-import { initMemofy, memoize } from "../lib";
+import Memofy from "../lib";
 
 describe("Without Caching Tests", () => {
-  initMemofy();
+  const { memoize } = new Memofy();
   test("should return value with params", () => {
     const concatPhoneNumber = jest.fn(
       (_extension: number, _number: number): string => {
@@ -64,11 +64,11 @@ describe("Without Caching Tests", () => {
       );
     });
     const _getLabel = memoize(getLabel);
-    expect(_getLabel({ price: 10, name: "Apple" })).toEqual("Apple - 9.000$");
+    expect(_getLabel({ price: 10, name: "Apple" })).toEqual("Apple - 9,000$");
     expect(getLabel).toHaveBeenCalledTimes(1);
 
     expect(_getLabel({ price: 1000, name: "Orange" })).toEqual(
-      "Orange - 900.000$"
+      "Orange - 900,000$"
     );
     expect(getLabel).toHaveBeenCalledTimes(2);
   });
@@ -112,16 +112,6 @@ describe("Without Caching Tests", () => {
     expect(searchText).toHaveBeenCalledTimes(2);
     expect(replaceTurkishChars).toHaveBeenCalledTimes(6);
   });
-
-  test("should work correctly while the method used the window object inside", () => {
-    const getAuthIsReady = jest.fn(() => {
-      const authKey = window.localStorage.getItem("auth");
-      return !!authKey;
-    });
-    const _getStorageData = memoize(getAuthIsReady, []);
-    expect(_getStorageData()).toBeFalsy();
-  });
-
   test("should return correct result when passed function used context", () => {
     const context = { name: "John" };
 

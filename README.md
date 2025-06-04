@@ -34,7 +34,8 @@ This module works like react's useMemo hook but NOT required react. You can use 
 AND very easy
 
 ```js
-import {memoize} from "memofy";
+const {memoize} = new Memofy(); // Inject to app context or export default for app
+
 
 const dep1 = /** Variable to track change */
 
@@ -66,11 +67,13 @@ _You should init memofy. It is provide initialization function and deps store. *
 
 ```js
 import { initMemofy } from "memofy";
-initMemofy();
+const memofy = new Memofy();
 /*If you want watch and debug memofy store on console pass this param */
-initMemofy({ trace: true });
+const memofy = new Memofy({ trace: true });
 /*If you want see returned cached value from memofy pass this param */
-initMemofy({ hasLogs: true });
+const memofy = new Memofy({ hasLogs: true });
+
+export default memofy;
 ```
 
 ## Usage case
@@ -80,8 +83,6 @@ initMemofy({ hasLogs: true });
 _In the following process, when the concatPhoneNumber method is called again with the same parameters, the function is not executed again, it fetches the result from the cache._
 
 ```js
-import { memoize } from "memofy";
-
 const concatPhoneNumber = (extension, number) => {
   // Heavy calculation
   // return result
@@ -99,8 +100,6 @@ memoizedConcatPhoneNumber(90, 552); // Runs concatPhoneNumber because params is 
 _If you want the method to run again with the same parameter according to some dependencies, you can pass the deps parameter as follows._
 
 ```js
-import { memoize } from "memofy";
-
 const product = { title: "Test product", price: 10 };
 
 const calculateTax = (taxRatio) => {
@@ -119,8 +118,6 @@ calculateTax(3); // Runs calculateTax because product dep changed -> 120
 ```
 
 ```js
-import { memoize } from "memofy";
-
 const products = [
   /**Let's say there are more than 100 products */
 ];
@@ -144,8 +141,6 @@ getTotalPrice(2); // Runs again getTotalPrice because products and parameter cha
 _If context(this, globalContex e.g) is used in the function you want to cache, you can pass the context parameter._
 
 ```js
-import { memoize } from "memofy";
-
 this.user.name = "Jack"; // For example inject name to context
 
 const getName = (suffix) => {
@@ -161,26 +156,27 @@ memoizedGetName("Mr"); // Result is Mr John because context data changed
 ## Declaration for typescript
 
 ```ts
-type DepsType = Array<any>;
+type MemoizedFunction<R = any> = (...args: Array<any>) => R;
 
-type MemoizedFunctionType<R, P extends Array<any>> = (...args: P) => R;
-
-type InitializationConfigType = {
+type MemofyParams = {
   trace?: boolean;
   hasLogs?: boolean;
 };
 
-declare const initMemofy: ({
-  trace,
-  hasLogs,
-}?: InitializationConfigType) => Promise<void>;
-declare const memoize: <R = any>(
-  functionToMemoize: MemoizedFunctionType<R, Array<any>>,
-  deps?: DepsType,
-  context?: unknown
-) => MemoizedFunctionType<R, Parameters<typeof functionToMemoize>>;
-
-export { initMemofy, memoize };
+declare class Memofy {
+  private readonly trace;
+  private readonly hasLogs;
+  private functionStore;
+  private depsStore;
+  private wasInitialize;
+  constructor(params?: MemofyParams);
+  init: () => void;
+  memoize: <F extends MemoizedFunction>(
+    functionToMemoize: F,
+    deps?: Array<any>,
+    context?: unknown
+  ) => F;
+}
 ```
 
 ## Performance result
@@ -192,19 +188,6 @@ _Performance results on a complex function that distinguishes prime numbers. [Pe
 | First execute time (no caching)    | > 52.08 ms |
 | Second execute time (caching)      | < 0.03 ms  |
 | and subsequent execution (caching) | < 0.03 ms  |
-
-## Test coverage result
-
-_Tests were written for all cases and all parameter types. [Tests](https://github.com/ahmetilhn/memofy/tree/master/__tests__)_
-
-| File                       | % Stmts | % Branch | % Funcs | % Lines |
-| -------------------------- | ------- | -------- | ------- | ------- |
-| All files                  | 90.69   | 86.95    | 100     | 94.59   |
-| lib                        | 88.88   | 92.3     | 100     | 87.5    |
-| index.ts                   | 88.88   | 92.3     | 100     | 87.5    |
-| lib/store                  | 92      | 80       | 100     | 100     |
-| DependencyCacheStore.ts.ts | 90      | 75       | 100     | 100     |
-| FunctionCacheStore.ts      | 93.33   | 83.33    | 100     | 100     |
 
 ## Contributing
 

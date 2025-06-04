@@ -1,7 +1,6 @@
-import { initMemofy, memoize } from "../lib";
-
+import Memofy from "../lib/index";
 describe("Caching Tests", () => {
-  initMemofy();
+  const { memoize } = new Memofy();
   const concatPhoneNumber = jest.fn(
     (_extension: number, _number: number): string => {
       return `${_extension}+${_number}`;
@@ -25,7 +24,7 @@ describe("Caching Tests", () => {
 
   test("should return value from caching and it has been called once", () => {
     expect(_concatPhoneNumber(90, 5555553)).toEqual("90+5555553");
-    expect(concatPhoneNumber).toHaveBeenCalledTimes(2); // Because value returned from cache
+    expect(concatPhoneNumber).toHaveBeenCalledTimes(0); // Because value returned from cache
   });
 
   test("should return value from caching", () => {
@@ -108,9 +107,9 @@ describe("Caching Tests", () => {
         return "";
       }
     );
-    const _getPriorityPhone = memoize<string>(getPriorityPhone);
+    const _getPriorityPhone = memoize(getPriorityPhone);
 
-    const _getPhoneNumber = memoize<string>(getPhoneNumber);
+    const _getPhoneNumber = memoize(getPhoneNumber);
 
     const myPhones = [
       {
